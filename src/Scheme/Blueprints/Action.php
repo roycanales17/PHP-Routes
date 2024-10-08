@@ -53,6 +53,7 @@
             $alias = $config['alias'];
             $action = $config['action'];
             $prefix = $config['prefix'];
+            $semi_prefix = $config['semi_prefix'];
             $middlewares = $config['middlewares'];
             $constraints = $config['constraints'];
 
@@ -62,7 +63,8 @@
             }
 
             // Validate URI/URL
-            if ($this->validateURI($uri, $prefix)) {
+            if ($this->validateURI($uri, array_merge($semi_prefix, $prefix))) {
+
 
                 // URI parameters.
                 $params = $this->params;

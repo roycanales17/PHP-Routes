@@ -3,7 +3,7 @@
     namespace App\Routing\Scheme;
 
     use App\Routing\Interfaces\Registrar;
-    use App\Routing\Http\{Controller, Middleware};
+    use App\Routing\Http\{Controller, Middleware, Prefix};
     use App\Routing\Scheme\Blueprints\Action;
     use App\Routing\Scheme\Blueprints\Extensions;
     use Closure;
@@ -76,22 +76,21 @@
 
             // Determine the action to execute
             $action = $actions[1] ?? '';
-            if ($actions) {
-                if ($this->initialize($action) === false) {
-                    switch (true) {
-                        case is_string($action):
-                            $class = Controller::fetch();
-                            if ($class) {
-                                $this->action = [$class, $action]; // Set action as an array with controller and action name
-                            } elseif (function_exists($action)) {
-                                $this->action = $action; // Set action as a callable function
-                            }
-                            break;
-                        case is_callable($action):
-                        case is_array($action):
-                            $this->action = $action; // Set action if it is callable or an array
-                            break;
-                    }
+            if ($actions && $this->initialize($action) === false) {
+                switch (true) {
+                    case is_string($action):
+                        $class = Controller::fetch();
+                        if ($class) {
+                            $this->action = [$class, $action]; // Set action as an array with controller and action name
+                        } elseif (function_exists($action)) {
+                            $this->action = $action; // Set action as a callable function
+                        }
+                        break;
+
+                    case is_callable($action):
+                    case is_array($action):
+                        $this->action = $action; // Set action if it is callable or an array
+                        break;
                 }
             }
             return $this;
@@ -112,6 +111,7 @@
                     'uri' => $this->uri,
                     'alias' => $this->alias,
                     'prefix' => $this->prefixes,
+                    'semi_prefix' => Prefix::fetch(),
                     'action' => $this->action,
                     'middlewares' => $this->middlewares,
                     'constraints' => $this->constraints

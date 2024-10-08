@@ -2,10 +2,7 @@
 
     namespace App\Routing;
 
-    use App\Routing\Http\Controller;
-    use App\Routing\Http\Group;
-    use App\Routing\Http\Middleware;
-    use App\Routing\Http\Prefix;
+    use App\Routing\Http\{Controller, Group, Middleware, Prefix};
     use App\Routing\Interfaces\Registrar;
     use App\Routing\Scheme\Facade;
     use ReflectionException;

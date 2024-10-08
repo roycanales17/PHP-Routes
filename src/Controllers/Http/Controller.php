@@ -23,15 +23,6 @@
         private static string $name = 'controller';
 
         /**
-         * Holds all registered global class controllers.
-         *
-         * This array stores all the controllers that are registered during the routing process.
-         *
-         * @var array
-         */
-        private static array $controllers = [];
-
-        /**
          * Registers a controller class based on the provided action.
          *
          * This method processes the action array, expecting a class name (string). It validates
@@ -91,9 +82,54 @@
             return $this;
         }
 
-        public function middleware(array|string $actions): self
+        /**
+         * Assign middleware to the route.
+         *
+         * This method allows you to attach one or multiple middleware to the route.
+         * Middleware can be specified as a string (e.g., 'auth') or as an array.
+         * If a string middleware contains a colon, it will be split into an array
+         * to handle parameters (e.g., 'auth:admin').
+         *
+         * If the middleware is not a global function, the method will attempt to find
+         * the corresponding method within the currently fetched controller, enabling
+         * controller-based middleware assignment.
+         */
+        public function middleware(array|string $middleware): self
         {
+            if (is_string($middleware)) {
 
+                // Handle middleware with parameters using colon syntax
+                if (strpos($middleware, ':') !== false) {
+                    $middleware = explode(':', $middleware);
+
+                } else {
+
+                    // Check if function exists or is a method within a controller
+                    if (!function_exists($middleware)) {
+                        $className = Controller::fetch();
+
+                        if ($className) {
+                            $middleware = [$className, $middleware];
+                        }
+                    }
+                }
+            }
+
+            self::$middlewares[] = $middleware;
+            return $this;
+        }
+
+        /**
+         * Add a prefix to the route URI.
+         *
+         * This method appends a given prefix to the route's URI, which can be useful for
+         * grouping routes under a common namespace or path.
+         */
+        public function prefix(string $prefix): self
+        {
+            if ($prefix) {
+                self::$prefixes[] = $prefix;
+            }
             return $this;
         }
 

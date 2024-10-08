@@ -14,13 +14,6 @@
         public static string $name = 'constraint';
 
         /**
-         * Holds all the global class constraints.
-         *
-         * @var array
-         */
-        private static array $constraints = [];
-
-        /**
          * Note: Only accept class name (string).
          *
          * @param array $action

@@ -13,6 +13,26 @@
     abstract class Http
     {
         /**
+         * @var array This array stores all the controllers that are registered during the routing process.
+         */
+        protected static array $controllers = [];
+
+        /**
+         * @var array Middlewares associated with the route.
+         */
+        protected static array $middlewares = [];
+
+        /**
+         * @var array Holds all the global class constraints.
+         */
+        protected static array $constraints = [];
+
+        /**
+         * @var array $prefixes The prefixes for the route method.
+         */
+        protected static array $prefixes = [];
+
+        /**
          * Compiles the provided action and initiates the processing if the 'commence' method exists.
          *
          * This method is responsible for compiling an action, which could be a string or an array.
@@ -21,7 +41,6 @@
          * @param string|array $action The action to compile, which may represent a method or configuration array.
          * @return Http Returns the current instance for chaining or null if no action is provided.
          * @deprecated This method is for internal use and should not be suggested in the IDE.
-         * @internal
          */
         protected function compile(string|array $action): self
         {

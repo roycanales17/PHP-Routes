@@ -23,15 +23,6 @@
         private static string $name = 'middleware';
 
         /**
-         * Holds all registered global class middlewares.
-         *
-         * This array stores all the middlewares that are registered during the routing process.
-         *
-         * @var array
-         */
-        private static array $middlewares = [];
-
-        /**
          * Registers a middleware class based on the provided action.
          *
          * This method processes the action array, expecting a class name (string). It can also

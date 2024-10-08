@@ -64,7 +64,6 @@ namespace App\Routing\Scheme\Blueprints;
          */
         private function validateMiddlewares(array $middlewares): bool
         {
-            $status = true; // Track overall validation status
             $performed = []; // Track performed middleware actions
             foreach ($middlewares as $middleware) {
                 $temp = is_string($middleware) ? $middleware : "$middleware[0]:$middleware[1]";
@@ -80,10 +79,15 @@ namespace App\Routing\Scheme\Blueprints;
                 // Analyze middleware actions for logging or debugging
                 if ($this->analyze()) {
                     self::$evaluation['middlewares'][] = ['action' => $temp, 'status' => intval($status)];
+                } else {
+                    // Exit loop if failed
+                    if (!intval($status)) {
+                        return false;
+                    }
                 }
             }
 
-            return (bool) $status; // Return the overall status of middleware validation
+            return true; // Return the overall status of middleware validation
         }
 
         /**
