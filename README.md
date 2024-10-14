@@ -102,3 +102,33 @@ This PHP library provides an intuitive, object-oriented way to define and manage
 - `static controller(string $className)`: Registers a controller.
 - `static middleware(string|array $action)`: Registers middleware for the route.
 - `static prefix(string $prefix)`: Adds a prefix to the route URI.
+
+
+## Getting Started
+
+To set up routing in your application, ensure that your web server is configured to use URL rewriting. This allows your application to route requests properly. Below are the configurations for both Apache or Nginx servers.
+
+### Apache
+
+If you are using an Apache web server, add the following code to your `.htaccess` file located in your application's root directory:
+
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Handle all other URLs
+    RewriteRule ^(.*)$ web.php/$1 [L] # Recommended: index.php
+</IfModule>
+```
+
+### Nginx
+For Nginx, you will need to configure the server block in your Nginx configuration file (usually located in /etc/nginx/sites-available/default or a similar path). Add the following rules to handle URL rewriting:
+
+```nginx
+location / {
+    try_files $uri $uri/ /web.php?$query_string; # Recommended: index.php
+}
+```
