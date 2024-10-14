@@ -18,7 +18,7 @@ namespace App\Routing\Scheme\Blueprints;
          *
          * @var string
          */
-        protected string $prefix = 'Routes';
+        protected string $prefix = '';
 
         /**
          * Validate constraints against provided parameters.
