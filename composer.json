@@ -10,10 +10,13 @@
   "type": "library",
   "license": "MIT",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "Robroy Canales",
-      "email": "canales.robroy123@gmail.com"
+      "email": "canales.robroy123@gmail.com",
+      "homepage": "https://github.com/roycanales17",
+      "role": "Developer"
     }
   ],
   "require": {
@@ -22,9 +25,12 @@
   "autoload": {
     "psr-4": {
       "App\\Routing": "src/",
-      "App\\Routing\\Http\\": "src/Http/",
+      "App\\Routing\\Http\\": "src/Controllers/Http",
+      "App\\Routing\\Controllers\\Requests\\": "src/Controllers/Requests",
       "App\\Routing\\Interfaces\\": "src/Interfaces/",
-      "App\\Routing\\Scheme\\": "src/Scheme/"
+      "App\\Routing\\Scheme\\Scheme\\Blueprints\\": "src/Scheme/Blueprints",
+      "App\\Routing\\Scheme\\Helper\\": "src/Scheme/Helper",
+      "App\\Routing\\Scheme\\": "src/Scheme"
     }
   }
 }
