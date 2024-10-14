@@ -8,19 +8,22 @@
     /**
      * Class Controller
      *
-     * Manages the registration and lifecycle of controller classes for routing.
-     * It extends the Http base class. This class
-     * provides functionality for grouping routes, fetching controllers, and ensuring
-     * the proper cleanup of registered controllers.
+     * This class manages the registration, validation, and lifecycle of controller classes used within the routing system.
+     * It extends the base Http class and provides additional functionality for grouping routes, handling middleware,
+     * and prefixing routes associated with controllers.
+     *
+     * @package App\Routing\Http
      */
-    class Controller extends Http {
-
+    class Controller extends Http
+    {
         use Group;
         use Middleware;
         use Prefix;
 
         /**
          * Class alias name for identifying the type of Http object.
+         *
+         * This static property is used as an identifier or alias for controllers within the routing system.
          *
          * @var string
          */
@@ -29,12 +32,13 @@
         /**
          * Registers a controller class based on the provided action.
          *
-         * This method processes the action array, expecting a class name (string). It validates
-         * if the class exists and, if so, registers it. Throws an exception if the class does not exist.
+         * This method processes the action array and expects a class name as a string. It validates
+         * the existence of the class and, if valid, registers it in the controllers array. If the class
+         * does not exist, it throws an InvalidArgumentException to ensure proper handling.
          *
-         * @param array $action The action array containing the controller class name.
+         * @param array $action The action array containing the controller class name as its first element.
          *
-         * @throws \InvalidArgumentException if the class does not exist.
+         * @throws \InvalidArgumentException If the class does not exist.
          *
          * @return void
          */
@@ -43,7 +47,6 @@
             $action = $action[0] ?? [];
 
             if (is_string($action)) {
-
                 // Check if class exists
                 if (!class_exists($action)) {
                     throw new \InvalidArgumentException("Class `$action` does not exist");
@@ -55,10 +58,10 @@
         }
 
         /**
-         * Removes the last registered controller when the object is destroyed.
+         * Removes the last registered controller.
          *
-         * This method ensures that the most recently registered controller is removed
-         * from the controllers array when the object is no longer in use.
+         * This method ensures that the most recently registered controller is removed from the internal controllers array,
+         * maintaining the integrity of the controller stack when controllers are no longer needed.
          *
          * @return void
          */
@@ -73,10 +76,10 @@
         /**
          * Retrieves the most recently registered controller.
          *
-         * This method returns the last controller registered in the buffer.
-         * If no controllers are registered, it returns an empty string.
+         * This method returns the name of the last controller registered in the buffer. If no controllers
+         * are registered, it returns an empty string.
          *
-         * @return string The name of the last registered controller or an empty string.
+         * @return string The name of the last registered controller or an empty string if none exist.
          */
         public static function fetch(): string
         {

@@ -3,18 +3,20 @@
     namespace App\Routing\Http;
 
     use App\Routing\Scheme\Http;
-    use App\Routing\Scheme\Helper\{Group,Controller,Prefix,Middleware as Middleware2};
+    use App\Routing\Scheme\Helper\{Group, Controller, Prefix, Middleware as Middleware2};
 
     /**
      * Class Middleware
      *
-     * Manages the registration and lifecycle of middleware classes for routing.
-     * It extends the Http base class, providing
-     * functionality for grouping middlewares, fetching them, and ensuring their
-     * proper cleanup.
+     * This class manages the registration, organization, and lifecycle of middleware components within the routing system.
+     * It extends the base Http class and provides additional functionality to support grouping, prefixing,
+     * and managing controllers for middleware usage. This enables a flexible and modular approach for handling
+     * middleware in the application.
+     *
+     * @package App\Routing\Http
      */
-    class Middleware extends Http {
-
+    class Middleware extends Http
+    {
         use Group;
         use Prefix;
         use Controller;
@@ -23,18 +25,21 @@
         /**
          * Class alias name for identifying the type of Http object.
          *
+         * This static property is used as an identifier or alias for middleware within the routing system.
+         *
          * @var string
          */
         private static string $name = 'middleware';
 
         /**
-         * Registers a middleware class based on the provided action.
+         * Registers a middleware component based on the provided action.
          *
-         * This method processes the action array, expecting a class name (string). It can also
-         * handle middleware with parameters using a colon syntax. If the action is a function, it verifies
-         * its existence. If it is a method within a controller, it associates it with the relevant class.
+         * This method interprets the action array, typically expecting the name of a middleware class (as a string).
+         * It supports handling middleware with parameters using a colon syntax (e.g., "ClassName:param1,param2").
+         * If the action refers to a function, it validates its existence. When it is a method within a controller,
+         * it binds it to the appropriate controller class for execution.
          *
-         * @param array $action The action array containing the middleware class name or function.
+         * @param array $action An array containing the middleware class name or function.
          *
          * @return void
          */
@@ -44,10 +49,11 @@
         }
 
         /**
-         * Removes the last registered middleware when the object is destroyed.
+         * Removes the last registered middleware.
          *
-         * This method ensures that the most recently registered middleware is removed
-         * from the middlewares array when the object is no longer in use.
+         * This method removes the most recently registered middleware from the internal middlewares array,
+         * ensuring that middleware components are cleaned up when they are no longer in use.
+         * It helps maintain the integrity and consistency of the middleware stack.
          *
          * @return void
          */
@@ -60,11 +66,12 @@
         }
 
         /**
-         * Retrieves all the buffered middlewares.
+         * Retrieves all registered middlewares currently in the buffer.
          *
-         * This method returns all the middlewares currently registered in the buffer.
+         * This method returns an array containing all the middlewares that have been registered,
+         * allowing inspection or manipulation of the middleware stack at runtime.
          *
-         * @return array An array of all registered middlewares.
+         * @return array An array of all currently registered middlewares.
          */
         public static function fetch(): array
         {
