@@ -65,7 +65,6 @@
             // Validate URI/URL
             if ($this->validateURI($uri, array_merge($semi_prefix, $prefix))) {
 
-
                 // URI parameters.
                 $params = $this->params;
 

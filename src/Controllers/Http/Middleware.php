@@ -3,7 +3,7 @@
     namespace App\Routing\Http;
 
     use App\Routing\Scheme\Http;
-    use Closure;
+    use App\Routing\Scheme\Helper\{Group,Controller,Prefix,Middleware as Middleware2};
 
     /**
      * Class Middleware
@@ -14,6 +14,11 @@
      * proper cleanup.
      */
     class Middleware extends Http {
+
+        use Group;
+        use Prefix;
+        use Controller;
+        use Middleware2;
 
         /**
          * Class alias name for identifying the type of Http object.
@@ -35,23 +40,7 @@
          */
         protected function commence(array $action): void
         {
-            $action = $action[0] ?? [];
-
-            if (is_string($action)) {
-                // Handle middleware with parameters using colon syntax
-                if (strpos($action, ':') !== false) {
-                    $action = explode(':', $action);
-                } else {
-                    // Check if function exists or is a method within a controller
-                    if (!function_exists($action)) {
-                        $className = Controller::fetch();
-                        if ($className) {
-                            $action = [$className, $action];
-                        }
-                    }
-                }
-            }
-            self::$middlewares[] = $action;
+            $this->middleware($action[0] ?? []);
         }
 
         /**
@@ -68,21 +57,6 @@
                 unset(self::$middlewares[count(self::$middlewares) - 1]);
                 self::$middlewares = array_values(self::$middlewares);
             }
-        }
-
-        /**
-         * Groups routes under a common configuration using a callback.
-         *
-         * This method executes a callback function, which can define a group of routes
-         * under a shared configuration such as a prefix or middleware.
-         *
-         * @param Closure $callback A closure that defines the grouped routes.
-         * @return $this Returns the current instance for chaining.
-         */
-        public function group(Closure $callback): self
-        {
-            $callback();
-            return $this;
         }
 
         /**

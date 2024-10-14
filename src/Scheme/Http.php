@@ -10,28 +10,8 @@
      * extended by classes that implement routing functionalities like controller, middleware,
      * prefix, constraint, and group handling.
      */
-    abstract class Http
+    abstract class Http extends Buffers
     {
-        /**
-         * @var array This array stores all the controllers that are registered during the routing process.
-         */
-        protected static array $controllers = [];
-
-        /**
-         * @var array Middlewares associated with the route.
-         */
-        protected static array $middlewares = [];
-
-        /**
-         * @var array Holds all the global class constraints.
-         */
-        protected static array $constraints = [];
-
-        /**
-         * @var array $prefixes The prefixes for the route method.
-         */
-        protected static array $prefixes = [];
-
         /**
          * Compiles the provided action and initiates the processing if the 'commence' method exists.
          *
@@ -61,8 +41,30 @@
          */
         function __destruct()
         {
+            foreach (self::$groups as $callback) {
+                $callback();
+            }
+
             if (method_exists($this, 'destroy')) {
                 $this->destroy();
+            }
+
+            // Get all traits used by the class
+            $traits = class_uses($this);
+
+            // Iterate over each trait and get its methods
+            $methods = [];
+            foreach ($traits as $trait) {
+                $methods = array_merge($methods, get_class_methods($trait));
+            }
+
+            // Update abstract properties
+            foreach ($methods as $method) {
+                $method = ucfirst($method);
+                $func = "update{$method}List";
+                if (method_exists($this, $func)) {
+                    $this->$func();
+                }
             }
         }
     }
