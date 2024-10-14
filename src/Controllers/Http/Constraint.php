@@ -38,18 +38,6 @@
         }
 
         /**
-         * Group callback...
-         *
-         * @param \Closure $callback
-         * @return $this
-         */
-        public function group(\Closure $callback): self
-        {
-            $callback();
-            return $this;
-        }
-
-        /**
          * Retrieves all the constraints buffered.
          *
          * @return array

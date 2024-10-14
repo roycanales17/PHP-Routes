@@ -31,7 +31,7 @@
         protected static function registerRoute(array $config): object|null
         {
             $route = self::getObject();
-            foreach ($route->getActions() as $http) {
+            foreach ($route::getActions() as $http) {
 
                 if ($instance = ($route->getInstance($config['method'] ?? '', $http, $config['args'] ?? []))) {
                     return $instance;
@@ -69,7 +69,7 @@
         private function getInstance(string $http, string $abstract, array $args): object|null
         {
             $httpLists = $this->getSubclassesOf($abstract);
-            $httpName = $this->classAlias;
+            $httpName = $this::getAlias();
 
             foreach ($httpLists as $class) {
 
@@ -77,8 +77,6 @@
                     $reflection = new \ReflectionClass($class);
 
                     // Class name
-                    $property = $reflection->getProperty($httpName);
-                    $property->setAccessible(true);
                     $propertyValue = $reflection->getProperty($httpName);
 
                     // Check if class property name is match

@@ -19,7 +19,7 @@
      * @method static Registrar delete(string $uri, string|array|\Closure $action = []) Defines a DELETE route.
      * @method static Registrar get(string $uri, string|array|\Closure $action = []) Defines a GET route.
      * @method static Registrar post(string $uri, string|array|\Closure $action = []) Defines a POST route.
-     * @method static Group group(\Closure $action) Registers a group of routes with shared configurations and middleware, enhancing route organization and reusability.
+     * @method static Group group(array $routes, \Closure $action) Registers a group of routes with shared configurations and middleware, enhancing route organization and reusability.
      * @method static Controller controller(string $className) Registers a controller.
      * @method static Middleware middleware(string|array $action) Registers middleware for the route.
      * @method static Prefix prefix(string $prefix) Adds a prefix to the route URI.

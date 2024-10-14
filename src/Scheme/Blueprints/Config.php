@@ -21,7 +21,7 @@
          *
          * @var string
          */
-        protected string $classAlias = 'name';
+        protected static string $classAlias = 'name';
 
         /**
          * Array of available actions for routing.
@@ -30,22 +30,9 @@
          *
          * @var array
          */
-        protected array $actions = [
+        protected static array $actions = [
             Http::class,
             Requests::class
-        ];
-
-        /**
-         * Guard settings for route validation.
-         *
-         * This array defines which classes serve as guards (e.g., middleware, constraints) and
-         * whether they are enabled or required (boolean value).
-         *
-         * @var array
-         */
-        protected array $routesGuard = [
-            Middleware::class   => true,
-            Constraint::class   => true
         ];
 
         /**
@@ -53,8 +40,13 @@
          *
          * @return array An array of classes representing the available routing actions.
          */
-        public function getActions(): array
+        public static function getActions(): array
         {
-            return $this->actions;
+            return self::$actions;
+        }
+
+        public static function getAlias(): string
+        {
+            return self::$classAlias;
         }
     }
