@@ -4,6 +4,8 @@
 
     class Buffers
     {
+        protected static array $controllersName = [];
+
         /**
          * @var array This array stores all the controllers that are registered during the routing process.
          */

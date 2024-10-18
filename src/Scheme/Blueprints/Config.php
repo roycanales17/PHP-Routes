@@ -14,6 +14,13 @@
     trait Config
     {
         /**
+         * The default prefix for routes.
+         *
+         * @var string
+         */
+        protected string $prefix = '';
+
+        /**
          * Alias used for class identification.
          *
          * This alias is used within the class to identify or map to a specific property name.
@@ -39,12 +46,12 @@
          *
          * @return array An array of classes representing the available routing actions.
          */
-        public static function getActions(): array
+        protected function getActions(): array
         {
             return self::$actions;
         }
 
-        public static function getAlias(): string
+        protected function getAlias(): string
         {
             return self::$classAlias;
         }

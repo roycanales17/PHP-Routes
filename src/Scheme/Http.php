@@ -12,6 +12,8 @@
      */
     abstract class Http extends Buffers
     {
+        private int $config_id = 0;
+
         /**
          * Compiles the provided action and initiates the processing if the 'commence' method exists.
          *
@@ -24,12 +26,17 @@
          */
         protected function compile(string|array $action): self
         {
+            $this->config_id = time() . random_int(1000, 9999);
             if ($action) {
                 if (method_exists($this, 'commence')) {
                     $this->commence($action);
                 }
             }
             return $this;
+        }
+
+        protected function configName(): string {
+            return $this::class.'_'.$this->config_id;
         }
 
         /**
@@ -41,10 +48,12 @@
          */
         function __destruct()
         {
-            foreach (self::$groups as $callback) {
+            // Run all the extended groups closures
+            foreach (self::$groups[$this->configName()] ?? [] as $callback) {
                 $callback();
             }
 
+            // Destroy last registered configurations
             if (method_exists($this, 'destroy')) {
                 $this->destroy();
             }

@@ -91,8 +91,9 @@
             if (is_string($middleware)) {
 
                 // Handle middleware with parameters using colon syntax
-                if (strpos($middleware, ':') !== false) {
-                    $middleware = explode(':', $middleware);
+                if (strpos($middleware, ':') !== false || strpos($middleware, '@') !== false) {
+                    $delimiter = strpos($middleware, ':') !== false ? ':' : '@';
+                    $middleware = explode($delimiter, $middleware);
 
                 } else {
 
@@ -104,6 +105,13 @@
                             $middleware = [$className, $middleware];
                         }
                     }
+                }
+            } elseif (is_array($middleware)) {
+                if (!class_exists($middleware[0] ?? '')) {
+                    foreach ($middleware as $m) {
+                        $this->middleware($m);
+                    }
+                    return $this;
                 }
             }
 

@@ -52,8 +52,19 @@
                     throw new \InvalidArgumentException("Class `$action` does not exist");
                 }
 
+                // Config name
+                $name = $this->configName();
+
+                // Class names
+                self::$controllersName[] = $name;
+
+                // Check if not exist
+                if ( !(self::$controllers[$name] ?? false) ) {
+                    self::$controllers[$name] = [];
+                }
+
                 // Register the controller class
-                self::$controllers[] = $action;
+                self::$controllers[$name][] = $action;
             }
         }
 
@@ -67,9 +78,16 @@
          */
         protected function destroy(): void
         {
-            if (self::$controllers) {
-                unset(self::$controllers[count(self::$controllers) - 1]);
-                self::$controllers = array_values(self::$controllers);
+            $name = $this->configName();
+            if (self::$controllers[$name]) {
+                unset(self::$controllers[$name][count(self::$controllers[$name]) - 1]);
+                self::$controllers[$name] = array_values(self::$controllers[$name]);
+
+                if (empty(self::$controllers[$name])) {
+                    unset(self::$controllers[$name]);
+                }
+
+                self::$controllersName = array_diff(self::$controllersName, [$name]);
             }
         }
 
@@ -83,6 +101,7 @@
          */
         public static function fetch(): string
         {
-            return self::$controllers ? end(self::$controllers) : '';
+            $lastClass = self::$controllersName ? end(self::$controllersName) : '';
+            return self::$controllers[$lastClass] ? end(self::$controllers[$lastClass]) : '';
         }
     }

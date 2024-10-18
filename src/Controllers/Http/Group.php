@@ -55,7 +55,7 @@
             // Collect all subclasses of the Http class
             $subclasses = [];
             $httpClassName = Http::class;
-            $httpAlias = $this::getAlias();
+            $httpAlias = $this->getAlias();
 
             foreach (get_declared_classes() as $class) {
                 if (is_subclass_of($class, $httpClassName)) {

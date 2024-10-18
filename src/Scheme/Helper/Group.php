@@ -45,8 +45,19 @@
          */
         public function group(Closure $callback): self
         {
+            // Increment
+            $this->totalAdded += 1;
+
+            // Config name
+            $configName = $this->configName();
+
+            // Group each of configuration routes
+            if ( !(self::$groups[$configName] ?? false) ) {
+                self::$groups[$configName] = [];
+            }
+
             // Append the callback defining the group to the groups array
-            self::$groups[] = $callback;
+            self::$groups[$configName][] = $callback;
 
             // Return the current instance for method chaining
             return $this;
@@ -65,8 +76,20 @@
         protected function updateGroupList(): void
         {
             if ($this->totalAdded) {
-                // Remove the last $totalAdded elements from the groups array
-                self::$groups = array_slice(self::$groups, 0, -$this->totalAdded);
+                // Config name
+                $configName = $this->configName();
+
+                // Check if exist
+                if (self::$groups[$configName] ?? false) {
+
+                    // Remove the last $totalAdded elements from the groups array
+                    self::$groups[$configName] = array_slice(self::$groups[$configName], 0, -$this->totalAdded);
+
+                    // Remove when empty
+                    if (empty(self::$groups[$configName])) {
+                        unset(self::$groups[$configName]);
+                    }
+                }
             }
         }
     }

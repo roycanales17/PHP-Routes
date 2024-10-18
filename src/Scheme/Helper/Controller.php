@@ -42,7 +42,21 @@
         {
             if (class_exists($className)) {
                 $this->totalAdded += 1;
-                self::$controllers[] = $className;
+
+                // Config name
+                $name = $this->configName();
+
+                // Class names
+                self::$controllersName[] = $name;
+
+                // Check if not exist
+                if ( !(self::$controllers[$name] ?? false) ) {
+                    self::$controllers[$name] = [];
+                }
+
+                // Register the controller class
+                self::$controllers[$name][] = $className;
+
             } else {
                 throw new \InvalidArgumentException("Class `$className` does not exist");
             }
@@ -62,8 +76,20 @@
         protected function updateControllerList(): void
         {
             if ($this->totalAdded) {
-                // Remove the last $totalAdded elements from the controllers array
-                self::$controllers = array_slice(self::$controllers, 0, -$this->totalAdded);
+                // Config name
+                $name = $this->configName();
+
+                // Check if exist
+                if (self::$controllers[$name] ?? false) {
+
+                    // Remove the last $totalAdded elements from the controllers array
+                    self::$controllers[$name] = array_slice(self::$controllers[$name], 0, -$this->totalAdded);
+
+                    // Remove if empty
+                    if (empty(self::$controllers[$name])) {
+                        unset(self::$controllers[$name]);
+                    }
+                }
             }
         }
     }

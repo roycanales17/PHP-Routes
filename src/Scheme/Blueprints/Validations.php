@@ -13,12 +13,7 @@ namespace App\Routing\Scheme\Blueprints;
      */
     trait Validations
     {
-        /**
-         * The default prefix for routes.
-         *
-         * @var string
-         */
-        protected string $prefix = '';
+        use Config;
 
         /**
          * Validate constraints against provided parameters.
