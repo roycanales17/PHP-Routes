@@ -1,6 +1,6 @@
 <?php
 
-    use App\Routing\Route;
+	use App\Routes\Route;
 
     /*
     |--------------------------------------------------------------------------
@@ -13,6 +13,6 @@
     |
     */
 
-    Route::get('/', function () {
+	Route::get('/', function () {
         echo 'Hello World!';
     });

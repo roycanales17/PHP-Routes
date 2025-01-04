@@ -1,0 +1,143 @@
+<?php
+
+	namespace App\Routes\Requests;
+
+	use App\Routes\Route;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Pal;
+	use App\Routes\Scheme\Reflections;
+	use App\Routes\Scheme\Validations;
+	use Closure;
+
+	abstract class Http
+	{
+		use Validations;
+		use Reflections;
+
+		protected string $uri = '';
+		protected array $middlewares = [];
+		protected string|array|Closure $actions = [];
+		protected static bool $resolved = false;
+
+		public function __construct(string $uri, mixed $actions)
+		{
+			$this->actions = $actions;
+			$this->uri = $uri;
+		}
+
+		private function setupRouteMiddleware(): void
+		{
+			$controller = $this?->getControllerName();
+			$middlewares = $this?->getMiddlewares() ?? [];
+
+			if (!$controller) {
+				$controllers = Buffer::fetch('controller');
+				if ($controllers)
+					$controller = end($controllers);
+			}
+
+			if ($globalMiddlewares = Buffer::fetch('middleware'))
+				$middlewares = array_merge($globalMiddlewares, $middlewares);
+
+			foreach ($middlewares as $middleware) {
+				if (is_string($middleware)) {
+					if (strpos($middleware, '::') !== false || strpos($middleware, '@') !== false) {
+						if (strpos($middleware, '@') !== false) {
+
+							$middleware = explode('@', $middleware);
+							$middleware[] = 'method';
+						} else {
+
+							$middleware = explode('::', $middleware);
+							$middleware[] = 'static';
+						}
+
+						$class = $middleware[0];
+						$method = $middleware[1];
+
+						if (method_exists($class, $method)) {
+							$this->middlewares[] = $middleware;
+						} else {
+							throw new \Exception("Invalid middleware, method not exist: $method");
+						}
+
+					} else {
+
+						if ($controller && method_exists($controller, $middleware)) {
+							$this->middlewares[] = [$controller, $middleware, 'method'];
+						} else {
+							throw new \Exception("Invalid middleware, method/controller not exist: ". json_encode([$controller, $middleware]));
+						}
+					}
+				} else {
+					if (count($middleware) == 2) {
+
+						$class = $middleware[0];
+						$method = $middleware[1];
+
+						if (method_exists($class, $method)) {
+							$this->middlewares[] = [$class, $method, 'method'];
+						} else {
+							throw new \Exception("Invalid middleware, method not exist: [$method]");
+						}
+					} else {
+						throw new \Exception("Invalid middleware actions: ". json_encode($middleware));
+					}
+				}
+			}
+		}
+
+		private function setupRouteAction(): void
+		{
+			$controller = $this?->getControllerName();
+
+			if (is_string($this->actions)) {
+				if ($controller) {
+					$this->actions = [$controller, $this->actions];
+				} else {
+
+					$controllers = Buffer::fetch('controller');
+					if ($controllers) {
+						if ($controller = end($controllers)) {
+							$this->actions = [$controller, $this->actions];
+						}
+					}
+				}
+			}
+		}
+
+		private function setupRouteName(array $prefix): void
+		{
+			$routeName = $this?->getRouteName();
+
+			if ($routeName)
+				Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
+		}
+
+		private function capture(Closure $closure): void
+		{
+			ob_start();
+			$closure();
+			Route::register(ob_get_clean(), http_response_code());
+		}
+
+		public function __destruct()
+		{
+			$this->setupRouteName($prefix = $this?->getPrefix() ?? []);
+			$this->setupRouteAction();
+			$this->setupRouteMiddleware();
+
+			if ($this->validateURI($this->uri, $prefix, $params) && !self::$resolved) {
+
+				if (!$this->validateMiddleware($this->middlewares)) {
+					$this->capture(function () {
+						Pal::display(['message' => 'Unauthorized'], 401);
+					});
+				}
+
+				$this->capture(function () {
+					echo $this->performAction($this->actions, $params ?? []);
+				});
+			}
+		}
+	}
