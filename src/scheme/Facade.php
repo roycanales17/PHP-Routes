@@ -14,6 +14,8 @@
 		 *
 		 * @param string $method The HTTP method (e.g., GET, POST, PUT) associated with the route.
 		 * @param array $params The parameters for the route.
+		 * @param array $routes An array of routes to be registered.
+		 * @param string $root The root path for the routes.
 		 * @throws Exception
 		 */
 		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '')
@@ -80,6 +82,11 @@
 			return null;
 		}
 
+		/**
+		 * Loads and includes route files defined in the routes array.
+		 *
+		 * @throws Exception If a route file does not exist.
+		 */
 		private function loadRoutes(): void
 		{
 			foreach ($this->getRoutes() as $route) {
@@ -97,8 +104,14 @@
 			}
 		}
 
-		public function captured(Closure $closure) {
-			return $closure($this->getContent(), $this->getResponseCode());
+		/**
+		 * Executes a closure with the current content and response code.
+		 *
+		 * @param Closure $closure The closure to be executed.
+		 */
+		public function captured(Closure $closure): void
+		{
+			$closure($this->getContent(), $this->getResponseCode());
 		}
 
 		/**
@@ -117,6 +130,12 @@
 			return Pal::createInstance("App\\Routes\\$type\\Builder\\$method", $this->params[0] ?? '', $this->params[1] ?? []);
 		}
 
+		/**
+		 * Registers the content and HTTP response code for the current route.
+		 *
+		 * @param mixed $content The content to be registered.
+		 * @param int $code The HTTP response code to be set.
+		 */
 		public static function register(mixed $content, int $code): void
 		{
 			self::setStaticResolved(true);
