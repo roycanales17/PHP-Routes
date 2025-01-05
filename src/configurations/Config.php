@@ -10,8 +10,9 @@
 		protected function setupController(): void
 		{
 			$className = $this?->getControllerName();
-			if (in_array(strtolower(Pal::baseClassName(static::class)), Pal::getRoutes('configurations')))
+			if ($className && in_array(strtolower(Pal::baseClassName(static::class)), Pal::getRoutes('configurations'))) {
 				Buffer::register('controller', $className);
+			}
 		}
 
 		protected function setupMiddleware(): void
@@ -27,7 +28,7 @@
 					}
 				}
 
-				if (in_array(strtolower(Pal::baseClassName(static::class)), Pal::getRoutes('configurations')))
+				if ($middleware && in_array(strtolower(Pal::baseClassName(static::class)), Pal::getRoutes('configurations')))
 					Buffer::register('middleware', $middleware);
 			}
 		}

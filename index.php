@@ -19,7 +19,8 @@
     });
 
 	Route::configure(__DIR__, [
-		'web.php'
+		'tests/web.php',
+		'tests/test.php'
 	])->captured(function(mixed $content, int $code) {
 		echo $content;
 	});

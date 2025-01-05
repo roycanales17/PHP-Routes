@@ -34,9 +34,10 @@
 
 		protected function setRoot(string $root): void
 		{
-			if (file_exists($root)) {
+			if (file_exists($root))
 				self::$root = $root;
-			}
+			else
+				throw new \Exception("[Route] Root folder for routes does not exist: $root");
 		}
 
 		protected function setContent(string $content): void

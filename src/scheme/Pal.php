@@ -60,6 +60,16 @@
 			return basename(str_replace('\\', '/', $className));
 		}
 
+		public static function requestMethod(string $method = ''): string|bool
+		{
+			$request = strtoupper($_SERVER['REQUEST_METHOD']);
+			if ($method) {
+				return $request === strtoupper($method);
+			}
+
+			return $request;
+		}
+
 		public static function display(mixed $content = '', int $code = 200, bool $exit = false, $type = 'html'|'json'|'text'|'xml', bool $return = false )
 		{
 			if ($return)

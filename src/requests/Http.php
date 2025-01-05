@@ -17,7 +17,6 @@
 		protected string $uri = '';
 		protected array $middlewares = [];
 		protected string|array|Closure $actions = [];
-		protected static bool $resolved = false;
 
 		public function __construct(string $uri, mixed $actions)
 		{
@@ -95,9 +94,7 @@
 				if ($controller) {
 					$this->actions = [$controller, $this->actions];
 				} else {
-
-					$controllers = Buffer::fetch('controller');
-					if ($controllers) {
+					if ($controllers = Buffer::fetch('controller')) {
 						if ($controller = end($controllers)) {
 							$this->actions = [$controller, $this->actions];
 						}
@@ -127,12 +124,16 @@
 			$this->setupRouteAction();
 			$this->setupRouteMiddleware();
 
-			if ($this->validateURI($this->uri, $prefix, $params) && !self::$resolved) {
+			if ($this->validateURI($this->uri, $prefix, $params)) {
+
+				if (!Pal::requestMethod(Pal::baseClassName(get_called_class())))
+					return;
 
 				if (!$this->validateMiddleware($this->middlewares)) {
 					$this->capture(function () {
 						Pal::display(['message' => 'Unauthorized'], 401);
 					});
+					return;
 				}
 
 				$this->capture(function () {
