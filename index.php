@@ -22,5 +22,6 @@
 		'tests/web.php',
 		'tests/test.php'
 	])->captured(function(mixed $content, int $code) {
+		http_response_code($code);
 		echo $content;
 	});
