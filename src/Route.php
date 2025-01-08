@@ -27,7 +27,7 @@
 
 	class Route extends Facade
 	{
-		public static function configure(string $root, array $routes): self {
-			return new static(routes: $routes, root: $root);
+		public static function configure(string $root, array $routesPath): self {
+			return new static(routes: $routesPath, root: $root);
 		}
 	}
