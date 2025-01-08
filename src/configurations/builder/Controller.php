@@ -28,9 +28,4 @@
 		{
 			$this->baseController($this->classNameProperty);
 		}
-
-		protected function destroy(): void
-		{
-			$this->arrayPopController();
-		}
 	}
