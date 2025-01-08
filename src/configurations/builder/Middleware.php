@@ -10,26 +10,25 @@
 
 	class Middleware extends Config
 	{
+		private string|array $middlewareProperty;
+
 		use Group;
 		use Controller {
-			BaseController as public controller;
+			RegisterController as public controller;
 		}
 		use BaseMiddleware {
-			BaseMiddleware as private middleware;
+			RegisterMiddleware as private middleware;
 		}
-
-		private string|array $middlewareProperty;
 
 		function __construct(string|array $middleware)
 		{
 			$this->middlewareProperty = $middleware;
 		}
 
-		protected function perform(): void
+		protected function register(): void
 		{
 			if (is_string($this->middlewareProperty)) {
-				$controller = $this?->getControllerName();
-
+				$controller = $this?->GetControllerName();
 				if ($controller) {
 					$this->middlewareProperty = [$controller, $this->middlewareProperty];
 				} else {
@@ -41,6 +40,6 @@
 					}
 				}
 			}
-			$this->BaseMiddleware($this->middlewareProperty);
+			$this->RegisterMiddleware($this->middlewareProperty);
 		}
 	}

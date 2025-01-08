@@ -9,23 +9,23 @@
 
 	class Controller extends Config
 	{
+		private string $classNameProperty;
+
 		use Group;
 		use BaseController {
-			baseController as private controller;
+			RegisterController as private controller;
 		}
 		use Middleware {
-			BaseMiddleware as public middleware;
+			RegisterMiddleware as public middleware;
 		}
-
-		private string $classNameProperty;
 
 		function __construct(string $className)
 		{
 			$this->classNameProperty = $className;
 		}
 
-		protected function perform(): void
+		protected function register(): void
 		{
-			$this->baseController($this->classNameProperty);
+			$this->RegisterController($this->classNameProperty);
 		}
 	}

@@ -10,7 +10,7 @@
 	{
 		private array $middleware = [];
 
-		protected function BaseMiddleware(string|array $middleware): self
+		protected function RegisterMiddleware(string|array $middleware): self
 		{
 			if ($middleware)
 				$this->middleware[] = $middleware;
@@ -18,15 +18,35 @@
 			return $this;
 		}
 
-		protected function arrayPopMiddleware(): void
+		protected function DestroyMiddleware(): void
 		{
-			$middlewares = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
-			array_pop($middlewares);
-
-			Buffer::replace('middleware', $middlewares);
+			$middlewares = $this->GetMiddlewares();
+			for ($i = 0; $i < count($middlewares); $i++) {
+				$middlewares_r = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
+				array_pop($middlewares_r);
+				Buffer::replace('middleware', $middlewares_r);
+			}
 		}
 
-		protected function getMiddlewares(): array
+		protected function SetupMiddleware(): void
+		{
+			$middlewares = $this->GetMiddlewares();
+			foreach ($middlewares as $middleware) {
+				if (is_string($middleware)) {
+					$controllers = Buffer::fetch('controller');
+
+					if ($controllers) {
+						$controller = end($controllers);
+						$middleware = [$controller, $middleware];
+					}
+				}
+
+				if ($middleware && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations')))
+					Buffer::register('middleware', $middleware);
+			}
+		}
+
+		protected function GetMiddlewares(): array
 		{
 			return $this->middleware;
 		}

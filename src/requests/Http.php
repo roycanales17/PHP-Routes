@@ -26,8 +26,8 @@
 
 		private function setupRouteMiddleware(): void
 		{
-			$controller = $this?->getControllerName() ?? '';
-			$middlewares = $this?->getMiddlewares() ?? [];
+			$controller = $this?->GetControllerName() ?? '';
+			$middlewares = $this?->GetMiddlewares() ?? [];
 
 			if (!$controller) {
 				$controllers = Buffer::fetch('controller');
@@ -88,7 +88,7 @@
 
 		private function setupRouteAction(): void
 		{
-			$controller = $this?->getControllerName();
+			$controller = $this?->GetControllerName();
 
 			if (is_string($this->actions)) {
 				if ($controller) {

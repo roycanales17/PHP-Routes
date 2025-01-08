@@ -10,10 +10,10 @@
 	class Put extends Http
 	{
 		use Middleware {
-			baseMiddleware as public middleware;
+			RegisterMiddleware as public middleware;
 		}
 		use Controller {
-			baseController as public controller;
+			RegisterController as public controller;
 		}
 		use Prefix {
 			BasePrefix as public prefix;

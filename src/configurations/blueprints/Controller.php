@@ -9,7 +9,7 @@
 	{
 		private string $controller = '';
 
-		protected function baseController(string $className): self
+		protected function RegisterController(string $className): self
 		{
 			if (class_exists($className))
 				$this->controller = $className;
@@ -17,15 +17,24 @@
 			return $this;
 		}
 
-		protected function arrayPopController(): void
+		protected function DestroyController(): void
 		{
-			$controllers = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
-			array_pop($controllers);
-
-			Buffer::replace('controller', $controllers);
+			if ($this->GetControllerName()) {
+				$controllers = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
+				array_pop($controllers);
+				Buffer::replace('controller', $controllers);
+			}
 		}
 
-		protected function getControllerName(): string
+		protected function SetupController(): void
+		{
+			$className = $this->GetControllerName();
+			if ($className && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
+				Buffer::register('controller', $className);
+			}
+		}
+
+		protected function GetControllerName(): string
 		{
 			return $this->controller;
 		}
