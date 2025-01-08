@@ -111,11 +111,11 @@
 				Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
 		}
 
-		private function capture(Closure $closure, int $code = 200): void
+		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void
 		{
 			ob_start();
 			$closure();
-			Route::register(ob_get_clean(), $code);
+			Route::register(ob_get_clean(), $code, $type);
 		}
 
 		public function __destruct()
@@ -132,7 +132,7 @@
 				if (!$this->validateMiddleware($this->middlewares)) {
 					$this->capture(function () {
 						echo(json_encode(['message' => 'Unauthorized']));
-					}, 401);
+					}, 401, 'application/json');
 					return;
 				}
 

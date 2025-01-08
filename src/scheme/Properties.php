@@ -16,6 +16,7 @@
 		private static array $routes = [];
 		private static int $responseCode = 200;
 		private static bool $resolved = false;
+		private static string $responseType = 'text/html';
 
 		protected function setParams(array $params): void
 		{
@@ -38,16 +39,6 @@
 				self::$root = $root;
 			else
 				throw new \Exception("[Route] Root folder for routes does not exist: $root");
-		}
-
-		protected function setContent(string $content): void
-		{
-			self::$content = $content;
-		}
-
-		protected function setHttpCode(int $code): void
-		{
-			self::$responseCode = $code;
 		}
 
 		protected function getRoutes(): array
@@ -80,6 +71,11 @@
 			return self::$responseCode;
 		}
 
+		public function getResponseType(): string
+		{
+			return self::$responseType;
+		}
+
 		protected function buildPath(string $path): string
 		{
 			return $this->getRoot() . "/". rtrim($path, '.php') . '.php';
@@ -103,6 +99,11 @@
 		protected static function setStaticContent(string $content): void
 		{
 			self::$content = $content;
+		}
+
+		protected static function setStaticResponseType(string $type): void
+		{
+			self::$responseType = strtolower($type);
 		}
 
 		protected static function setStaticRoot(string $root): void

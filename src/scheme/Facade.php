@@ -98,10 +98,8 @@
 				}
 			}
 
-			if (!$this->isResolved()) {
-				$this->setHttpCode(404);
-				$this->setContent(json_encode(['message' => '404 Page']));
-			}
+			if (!$this->isResolved())
+				self::register(json_encode(['message' => '404 Page']), 404, 'application/json');
 		}
 
 		/**
@@ -111,7 +109,7 @@
 		 */
 		public function captured(Closure $closure): void
 		{
-			$closure($this->getContent(), $this->getResponseCode());
+			$closure($this->getContent(), $this->getResponseCode(), $this->getResponseType());
 		}
 
 		/**
@@ -136,10 +134,11 @@
 		 * @param mixed $content The content to be registered.
 		 * @param int $code The HTTP response code to be set.
 		 */
-		public static function register(mixed $content, int $code): void
+		public static function register(mixed $content, int $code, string $type): void
 		{
 			self::setStaticResolved(true);
 			self::setStaticContent($content);
 			self::setStaticHttpCode($code);
+			self::setStaticResponseType($type);
 		}
 	}
