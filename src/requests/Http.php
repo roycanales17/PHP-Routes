@@ -113,8 +113,7 @@
 
 		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void
 		{
-			ob_start();
-			$closure();
+			ob_start(); $closure();
 			Route::register(ob_get_clean(), $code, $type);
 		}
 
