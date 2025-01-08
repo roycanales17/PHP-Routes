@@ -22,6 +22,5 @@
 		'tests/web.php',
 		'tests/test.php'
 	])->captured(function(mixed $content, int $code) {
-		var_dump($code);
 		echo $content;
 	});
