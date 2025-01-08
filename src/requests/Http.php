@@ -26,7 +26,7 @@
 
 		private function setupRouteMiddleware(): void
 		{
-			$controller = $this?->getControllerName();
+			$controller = $this?->getControllerName() ?? '';
 			$middlewares = $this?->getMiddlewares() ?? [];
 
 			if (!$controller) {
@@ -40,8 +40,8 @@
 
 			foreach ($middlewares as $middleware) {
 				if (is_string($middleware)) {
-					if (strpos($middleware, '::') !== false || strpos($middleware, '@') !== false) {
-						if (strpos($middleware, '@') !== false) {
+					if (str_contains($middleware, '::') || str_contains($middleware, '@')) {
+						if (str_contains($middleware, '@')) {
 
 							$middleware = explode('@', $middleware);
 							$middleware[] = 'method';
