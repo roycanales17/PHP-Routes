@@ -3,7 +3,6 @@
 	namespace App\Routes\Scheme;
 
 	use ReflectionMethod;
-	use SimpleXMLElement;
 
 	class Pal
 	{
@@ -68,46 +67,5 @@
 			}
 
 			return $request;
-		}
-
-		public static function display(mixed $content = '', int $code = 200, bool $exit = false, $type = 'html'|'json'|'text'|'xml', bool $return = false )
-		{
-			if ($return)
-				ob_start();
-
-			http_response_code($code);
-			switch ($type) {
-				case 'json':
-					header('Content-Type: application/json');
-					echo(json_encode($content));
-					break;
-
-				case 'text':
-					header('Content-Type: text/plain');
-					echo($content);
-					break;
-
-				case 'xml':
-					header('Content-Type: application/xml');
-					$xml = new SimpleXMLElement('<root/>');
-					array_walk_recursive($content, function($value, $key) use ($xml) {
-						$xml->addChild($key, $value);
-					});
-					echo($xml->asXML());
-					break;
-
-				default:
-					header('Content-Type: text/html');
-					echo !is_string($content) ? json_encode($content) : $content;
-					break;
-			}
-
-			if ($return)
-				return ob_get_clean();
-
-			if ($exit)
-				exit;
-
-			return null;
 		}
 	}

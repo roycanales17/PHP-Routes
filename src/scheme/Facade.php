@@ -99,8 +99,8 @@
 			}
 
 			if (!$this->isResolved()) {
-				$this->setContent(Pal::display(['message' => '404 Page'], code: 404, return: true));
 				$this->setHttpCode(404);
+				$this->setContent(json_encode(['message' => '404 Page']));
 			}
 		}
 
