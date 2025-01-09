@@ -21,7 +21,9 @@
 	Route::configure(__DIR__, [
 		'tests/web.php',
 		'tests/test.php'
-	])->captured(function(mixed $content, int $code, string $type) {
+	])->routes(function (array $routes) {
+		// Retrieve here all the routes listed...
+	})->captured(function(mixed $content, int $code, string $type) {
 		http_response_code($code);
 		header('Content-Type: ' . $type);
 		echo $content;
