@@ -19,11 +19,19 @@
 			}
 		}
 
+		private function PerformGroups(): void
+		{
+			$groups = method_exists($this, 'getGroups') ? $this->getGroups() : [];;
+			foreach ($groups as $group) {
+				call_user_func($group);
+			}
+		}
+
 		function __destruct()
 		{
 			$this->register();
 			$this->PerformConfigurations('Setup');
-			array_map('call_user_func', $this?->getGroups() ?? []);
+			$this->PerformGroups();
 			$this->PerformConfigurations('Destroy');
 		}
 	}

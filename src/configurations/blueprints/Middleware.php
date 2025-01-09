@@ -12,6 +12,71 @@
 
 		protected function RegisterMiddleware(string|array $middleware): self
 		{
+			if (is_string($middleware)) {
+				if (str_contains($middleware, '::') || str_contains($middleware, '@')) {
+
+					if (str_contains($middleware, '@')) {
+						$middleware = explode('@', $middleware);
+						$middleware[] = 'method';
+					} else {
+
+						$middleware = explode('::', $middleware);
+						$middleware[] = 'static';
+					}
+
+					$class = $middleware[0];
+					$method = $middleware[1];
+
+					if (!method_exists($class, $method))
+						$middleware = [];
+
+				} else {
+					$controller = method_exists($this, 'GetControllerName') ? $this->GetControllerName() : '';
+					if ($controller) {
+						if (method_exists($controller, $middleware)) {
+							if (Pal::checkIfMethodIsStatic($controller, $middleware)) {
+								$middleware = [$controller, $middleware, 'static'];
+							} else {
+								$middleware = [$controller, $middleware, 'method'];
+							}
+						} else {
+							$middleware = [];
+						}
+					} else {
+						$controller = Buffer::fetch('controller');
+						if ($controller && $controller = end($controller)) {
+							if (method_exists($controller, $middleware)) {
+								if (Pal::checkIfMethodIsStatic($controller, $middleware)) {
+									$middleware = [$controller, $middleware, 'static'];
+								} else {
+									$middleware = [$controller, $middleware, 'method'];
+								}
+							} else {
+								$middleware = [];
+							}
+						} else {
+							$middleware = [];
+						}
+					}
+				}
+			} else {
+				if (count($middleware) == 2) {
+					$class = $middleware[0];
+					$method = $middleware[1];
+					if (method_exists($class, $method)) {
+						if (Pal::checkIfMethodIsStatic($class, $method)) {
+							$middleware = [$class, $method, 'static'];
+						} else {
+							$middleware = [$class, $method, 'method'];
+						}
+					} else {
+						$middleware = [];
+					}
+				} else {
+					$middleware = [];
+				}
+			}
+
 			if ($middleware)
 				$this->middleware[] = $middleware;
 
@@ -23,8 +88,10 @@
 			$middlewares = $this->GetMiddlewares();
 			for ($i = 0; $i < count($middlewares); $i++) {
 				$middlewares_r = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
-				array_pop($middlewares_r);
-				Buffer::replace('middleware', $middlewares_r);
+				if ($middlewares_r) {
+					array_pop($middlewares_r);
+					Buffer::replace('middleware', $middlewares_r);
+				}
 			}
 		}
 

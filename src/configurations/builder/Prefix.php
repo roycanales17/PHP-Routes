@@ -12,9 +12,11 @@
 	{
 		private string $prefixProperty;
 
-		use Group;
 		use BasePrefix {
 			RegisterPrefix as private prefix;
+		}
+		use Group {
+			RegisterGroup as public group;
 		}
 		use Controller {
 			RegisterController as public controller;

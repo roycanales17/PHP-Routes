@@ -34,63 +34,12 @@
 
 		private function setupRouteMiddleware(): void
 		{
-			$controller = $this?->GetControllerName() ?? '';
-			$middlewares = $this?->GetMiddlewares() ?? [];
-
-			if (!$controller) {
-				$controllers = Buffer::fetch('controller');
-				if ($controllers)
-					$controller = end($controllers);
-			}
-
+			$middlewares = method_exists($this, 'GetMiddlewares') ? $this?->GetMiddlewares() : [];
 			if ($globalMiddlewares = Buffer::fetch('middleware'))
 				$middlewares = array_merge($globalMiddlewares, $middlewares);
 
-			foreach ($middlewares as $middleware) {
-				if (is_string($middleware)) {
-					if (str_contains($middleware, '::') || str_contains($middleware, '@')) {
-						if (str_contains($middleware, '@')) {
-
-							$middleware = explode('@', $middleware);
-							$middleware[] = 'method';
-						} else {
-
-							$middleware = explode('::', $middleware);
-							$middleware[] = 'static';
-						}
-
-						$class = $middleware[0];
-						$method = $middleware[1];
-
-						if (method_exists($class, $method)) {
-							$this->middlewares[] = $middleware;
-						} else {
-							throw new \Exception("Invalid middleware, method not exist: $method");
-						}
-
-					} else {
-
-						if ($controller && method_exists($controller, $middleware)) {
-							$this->middlewares[] = [$controller, $middleware, 'method'];
-						} else {
-							throw new \Exception("Invalid middleware, method/controller not exist: ". json_encode([$controller, $middleware]));
-						}
-					}
-				} else {
-					if (count($middleware) == 2) {
-
-						$class = $middleware[0];
-						$method = $middleware[1];
-
-						if (method_exists($class, $method)) {
-							$this->middlewares[] = [$class, $method, 'method'];
-						} else {
-							throw new \Exception("Invalid middleware, method not exist: [$method]");
-						}
-					} else {
-						throw new \Exception("Invalid middleware actions: ". json_encode($middleware));
-					}
-				}
+			if ($middlewares) {
+				$this->middlewares = $middlewares;
 			}
 		}
 

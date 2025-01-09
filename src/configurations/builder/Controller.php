@@ -12,9 +12,11 @@
 	{
 		private string $classNameProperty;
 
-		use Group;
 		use BaseController {
 			RegisterController as private controller;
+		}
+		use Group {
+			RegisterGroup as public group;
 		}
 		use Prefix {
 			RegisterPrefix as public prefix;

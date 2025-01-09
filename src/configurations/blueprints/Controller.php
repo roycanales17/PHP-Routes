@@ -21,8 +21,10 @@
 		{
 			if ($this->GetControllerName()) {
 				$controllers = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
-				array_pop($controllers);
-				Buffer::replace('controller', $controllers);
+				if ($controllers) {
+					array_pop($controllers);
+					Buffer::replace('controller', $controllers);
+				}
 			}
 		}
 

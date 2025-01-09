@@ -8,7 +8,7 @@
 	{
 		private array $groups = [];
 
-		public function group(Closure $callback): self
+		protected function RegisterGroup(Closure $callback): self
 		{
 			$this->groups[] = $callback;
 			return $this;
