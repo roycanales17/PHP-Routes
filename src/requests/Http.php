@@ -45,9 +45,8 @@
 
 		private function setupRouteAction(): void
 		{
-			$controller = $this?->GetControllerName();
-
 			if (is_string($this->actions)) {
+				$controller = method_exists($this, 'GetControllerName') ? $this->GetControllerName() : '';
 				if ($controller) {
 					$this->actions = [$controller, $this->actions];
 				} else {
@@ -62,8 +61,7 @@
 
 		private function setupRouteName(array $prefix): void
 		{
-			$routeName = $this?->getRouteName();
-
+			$routeName = method_exists($this, 'getRouteName') ? $this->getRouteName() : '';
 			if ($routeName)
 				Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
 		}
