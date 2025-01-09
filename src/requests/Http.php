@@ -27,7 +27,7 @@
 		private function getActivePrefix(): array
 		{
 			$globalPrefix = Buffer::fetch('prefix') ?? [];
-			$prefix = $this?->getPrefix() ?? [];
+			$prefix = method_exists($this, 'getPrefix') ? $this->getPrefix() : [];
 
 			return array_merge($globalPrefix, $prefix);
 		}
