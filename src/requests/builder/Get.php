@@ -17,7 +17,7 @@
 			RegisterController as public controller;
 		}
 		use Prefix {
-			BasePrefix as public prefix;
+			RegisterPrefix as public prefix;
 		}
 		use Name {
 			BaseName as public name;

@@ -5,6 +5,7 @@
 	use App\Routes\Configurations\Config;
 	use App\Routes\Configurations\Blueprints\Group;
 	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Blueprints\Controller as BaseController;
 
 	class Controller extends Config
@@ -14,6 +15,9 @@
 		use Group;
 		use BaseController {
 			RegisterController as private controller;
+		}
+		use Prefix {
+			RegisterPrefix as public prefix;
 		}
 		use Middleware {
 			RegisterMiddleware as public middleware;

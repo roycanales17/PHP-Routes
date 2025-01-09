@@ -24,6 +24,14 @@
 			$this->uri = $uri;
 		}
 
+		private function getActivePrefix(): array
+		{
+			$globalPrefix = Buffer::fetch('prefix') ?? [];
+			$prefix = $this?->getPrefix() ?? [];
+
+			return array_merge($globalPrefix, $prefix);
+		}
+
 		private function setupRouteMiddleware(): void
 		{
 			$controller = $this?->GetControllerName() ?? '';
@@ -119,11 +127,11 @@
 
 		public function __destruct()
 		{
-			$this->setupRouteName($prefix = $this?->getPrefix() ?? []);
+			$this->setupRouteName($prefixes = $this->getActivePrefix());
 			$this->setupRouteAction();
 			$this->setupRouteMiddleware();
 
-			if ($this->validateURI($this->uri, $prefix, $params)) {
+			if ($this->validateURI($this->uri, $prefixes, $params)) {
 
 				if (!Pal::requestMethod(Pal::baseClassName(get_called_class())))
 					return;
