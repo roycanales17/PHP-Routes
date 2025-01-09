@@ -8,6 +8,7 @@
 	use App\Routes\Scheme\Reflections;
 	use App\Routes\Scheme\Validations;
 	use Closure;
+	use ReflectionException;
 
 	abstract class Http
 	{
@@ -72,6 +73,9 @@
 			Route::register(ob_get_clean(), $code, $type);
 		}
 
+		/**
+		 * @throws ReflectionException
+		 */
 		public function __destruct()
 		{
 			$this->setupRouteName($prefixes = $this->getActivePrefix());
@@ -90,7 +94,7 @@
 					return;
 				}
 
-				$this->capture(function () {
+				$this->capture( function () {
 					echo $this->performAction($this->actions, $params ?? []);
 				});
 			}
