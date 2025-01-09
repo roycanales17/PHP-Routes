@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
+	use ReflectionException;
 	use ReflectionMethod;
 
 	class Pal
@@ -18,6 +19,15 @@
 			}
 
 			return null;
+		}
+
+		public static function checkIfMethodIsStatic($className, $methodName): bool {
+			try {
+				$reflectionMethod = new ReflectionMethod($className, $methodName);
+				return $reflectionMethod->isStatic();
+			} catch (ReflectionException $e) {
+				return false;
+			}
 		}
 
 		public static function getRoutes(string $type): array
