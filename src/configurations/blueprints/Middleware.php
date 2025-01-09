@@ -104,7 +104,18 @@
 
 					if ($controllers) {
 						$controller = end($controllers);
-						$middleware = [$controller, $middleware];
+						if (method_exists($controller, $middleware)) {
+							if (Pal::checkIfMethodIsStatic($controller, $middleware)) {
+								$temp_middleware = [$controller, $middleware, 'static'];
+							} else {
+								$temp_middleware = [$controller, $middleware, 'method'];
+							}
+							$middleware = $temp_middleware;
+						} else {
+							$middleware = [];
+						}
+					} else {
+						$middleware = [];
 					}
 				}
 
