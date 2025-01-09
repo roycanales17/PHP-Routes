@@ -60,18 +60,39 @@
 			}
 		}
 
-		private function setupRouteName(array $prefix): void
+		private function setupRouteName(array $prefix, string|null &$name = null): void
 		{
+			$name = '';
+			$routeNames = Buffer::fetch('names') ?? [];
 			$routeName = method_exists($this, 'getRouteName') ? $this->getRouteName() : '';
-			if ($routeName) {
-				Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
-			} else {
-				if ($routeNames = Buffer::fetch('names')) {
-					if ($routeName = end($routeNames)) {
-						Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
-					}
-				}
+
+			if ($routeNames) {
+				$name .= implode('.', $routeNames);
 			}
+
+			if ($routeName) {
+				$name .= ( $routeNames ? '.' : '' ) . $routeName;
+			}
+		}
+
+		private function registerRoutes($prefixes, $routeName): void
+		{
+			$action = $this->actions;
+			if (is_object($this->actions)) {
+				$action = 'Closure';
+			}
+
+			$prefix = '';
+			if ($prefixes) {
+				$prefix .= '/'. trim(implode('/', $prefixes), '/');
+			}
+
+			Buffer::register('routes', [
+				'uri' => $prefix . '/' . ltrim($this->uri, '/'),
+				'actions' => $action,
+				'middlewares' => $this->middlewares,
+				'name' => $routeName
+			]);
 		}
 
 		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void
@@ -85,9 +106,10 @@
 		 */
 		public function __destruct()
 		{
-			$this->setupRouteName($prefixes = $this->getActivePrefix());
+			$this->setupRouteName($prefixes = $this->getActivePrefix(), $routeName);
 			$this->setupRouteAction();
 			$this->setupRouteMiddleware();
+			$this->registerRoutes($prefixes, $routeName);
 
 			if ($this->validateURI($this->uri, $prefixes, $params)) {
 

@@ -7,14 +7,13 @@
 
 	trait Name
 	{
-		private static array $names = [];
 		private string $name = '';
 
 		protected function RegisterName(string $routeName): self
 		{
 			$routeName = strtolower($routeName);
-			if ($routeName && !in_array($routeName, self::$names)) {
-				$this->name = self::$names[] = $routeName;
+			if ($routeName) {
+				$this->name = $routeName;
 			}
 
 			return $this;

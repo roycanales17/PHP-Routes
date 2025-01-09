@@ -29,8 +29,10 @@
 			if ($root)
 				$this->setRoot($root);
 
-			if ($routes)
-				$this->loadRoutes();
+			if ($routes) {
+				$this->loadRoutes('initialize');
+				$this->loadRoutes('capture');
+			}
 		}
 
 		/**
@@ -87,7 +89,7 @@
 		 *
 		 * @throws Exception If a route file does not exist.
 		 */
-		private function loadRoutes(): void
+		private function loadRoutes(string $action): void
 		{
 			foreach ($this->getRoutes() as $route) {
 				$path = $this->buildPath($route);
@@ -100,6 +102,18 @@
 
 			if (!$this->isResolved())
 				self::register(json_encode(['message' => '404 Page']), 404, 'application/json');
+		}
+
+		/**
+		 * Returns all the routes detected.
+		 *
+		 * @param Closure $closure
+		 * @return $this
+		 */
+		public function routes(Closure $closure): self
+		{
+			$closure(Buffer::fetch('routes') ?? []);
+			return $this;
 		}
 
 		/**

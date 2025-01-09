@@ -5,6 +5,7 @@
 	class Buffer
 	{
 		private static array $buffered = [];
+		private static array $storage = [];
 
 		public static function register(string $config, $data): void
 		{
@@ -28,5 +29,15 @@
 		public static function all(): array
 		{
 			return self::$buffered;
+		}
+
+		public static function set(string $config, $data): void
+		{
+			self::$storage[$config]	= $data;
+		}
+
+		public static function get(string $config): mixed
+		{
+			return self::$storage[$config] ?? null;
 		}
 	}

@@ -8,7 +8,6 @@
 	class Pal
 	{
 		private static array $routes = [];
-		private static array $routeNames = [];
 
 		public static function performPrivateMethod(object $instance, string $methodName, ...$params):? object
 		{
@@ -48,20 +47,6 @@
 				return new $className(...$params);
 
 			return null;
-		}
-
-		public static function registerRouteName(string $name, string $uri): void
-		{
-			self::$routeNames[$name] = $uri;
-		}
-
-		public static function fetchRoutesName(string $name = ''): array|string
-		{
-			if ($name) {
-				return self::$routeNames[$name] ?? '';
-			}
-
-			return self::$routeNames;
 		}
 
 		public static function baseClassName(string $className): string
