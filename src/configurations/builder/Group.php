@@ -28,7 +28,7 @@
 			$this->group($action);
 		}
 
-		protected function getConfigurations(): array
+		private function getConfigurations(): array
 		{
 			if (self::$traits)
 				return self::$traits;
