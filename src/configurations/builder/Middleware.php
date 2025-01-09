@@ -5,6 +5,7 @@
 	use App\Routes\Configurations\Blueprints\Middleware as BaseMiddleware;
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Group;
+	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Config;
 
@@ -14,6 +15,9 @@
 
 		use BaseMiddleware {
 			RegisterMiddleware as private middleware;
+		}
+		use Name {
+			RegisterName as public name;
 		}
 		use Group {
 			RegisterGroup as public group;

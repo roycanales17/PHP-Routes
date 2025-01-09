@@ -6,6 +6,7 @@
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Config;
 	use App\Routes\Scheme\Pal;
 	use Closure;
@@ -15,6 +16,7 @@
 		use BaseGroup {
 			RegisterGroup as private group;
 		}
+		use Name;
 		use Controller;
 		use Middleware;
 		use Prefix;

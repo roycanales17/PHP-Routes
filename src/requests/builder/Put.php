@@ -20,6 +20,6 @@
 			RegisterPrefix as public prefix;
 		}
 		use Name {
-			BaseName as public name;
+			RegisterName as public name;
 		}
 	}

@@ -24,4 +24,9 @@
 		{
 			self::$buffered[$config] = $data;
 		}
+
+		public static function all(): array
+		{
+			return self::$buffered;
+		}
 	}

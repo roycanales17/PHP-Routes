@@ -5,6 +5,7 @@
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Group;
 	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Blueprints\Prefix as BasePrefix;
 	use App\Routes\Configurations\Config;
 
@@ -14,6 +15,9 @@
 
 		use BasePrefix {
 			RegisterPrefix as private prefix;
+		}
+		use Name {
+			RegisterName as public name;
 		}
 		use Group {
 			RegisterGroup as public group;

@@ -21,9 +21,11 @@
 		protected function DestroyPrefix(): void
 		{
 			if ($this->getPrefix()) {
-				$prefix = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
-				array_pop($prefix);
-				Buffer::replace('prefix', $prefix);
+				$prefix = Buffer::fetch('prefix');
+				if ($prefix) {
+					array_pop($prefix);
+					Buffer::replace('prefix', $prefix);
+				}
 			}
 		}
 

@@ -63,8 +63,15 @@
 		private function setupRouteName(array $prefix): void
 		{
 			$routeName = method_exists($this, 'getRouteName') ? $this->getRouteName() : '';
-			if ($routeName)
+			if ($routeName) {
 				Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
+			} else {
+				if ($routeNames = Buffer::fetch('names')) {
+					if ($routeName = end($routeNames)) {
+						Pal::registerRouteName($routeName, $this->URISlashes($this->uri, $prefix));
+					}
+				}
+			}
 		}
 
 		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void

@@ -20,7 +20,7 @@
 		protected function DestroyController(): void
 		{
 			if ($this->GetControllerName()) {
-				$controllers = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
+				$controllers = Buffer::fetch('controller');
 				if ($controllers) {
 					array_pop($controllers);
 					Buffer::replace('controller', $controllers);

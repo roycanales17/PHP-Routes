@@ -87,7 +87,8 @@
 		{
 			$middlewares = $this->GetMiddlewares();
 			for ($i = 0; $i < count($middlewares); $i++) {
-				$middlewares_r = Buffer::fetch(strtolower(Pal::baseClassName(get_called_class())));
+				$middlewares_r = Buffer::fetch('middleware');
+
 				if ($middlewares_r) {
 					array_pop($middlewares_r);
 					Buffer::replace('middleware', $middlewares_r);
@@ -119,8 +120,9 @@
 					}
 				}
 
-				if ($middleware && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations')))
+				if ($middleware && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
 					Buffer::register('middleware', $middleware);
+				}
 			}
 		}
 
