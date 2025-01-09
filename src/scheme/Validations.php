@@ -31,14 +31,9 @@
 				$method = $middleware[1];
 				$type = $middleware[2];
 
-				if ($type == 'method') {
-					if (!(new $class)->$method()) {
-						return false;
-					}
-				} else {
-					if (!$class::$method()) {
-						return false;
-					}
+				$instance = ($type === 'method') ? new $class : $class;
+				if (!($type === 'method' ? $instance->$method() : $instance::$method())) {
+					return false;
 				}
 			}
 
