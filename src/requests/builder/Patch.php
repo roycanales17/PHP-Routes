@@ -1,6 +1,7 @@
 <?php
 
 	namespace App\Routes\Requests\Builder;
+
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Name;
