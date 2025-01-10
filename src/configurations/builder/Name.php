@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Configurations\Builder;
 
+	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Name as BaseName;
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Group;
@@ -15,6 +16,9 @@
 
 		use BaseName {
 			RegisterName as private name;
+		}
+		use Domain {
+			RegisterDomain as public domain;
 		}
 		use Middleware {
 			RegisterMiddleware as public middleware;

@@ -7,6 +7,7 @@
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Controller as BaseController;
 
 	class Controller extends Config
@@ -15,6 +16,9 @@
 
 		use BaseController {
 			RegisterController as private controller;
+		}
+		use Domain {
+			RegisterDomain as public domain;
 		}
 		use Name {
 			RegisterName as public name;

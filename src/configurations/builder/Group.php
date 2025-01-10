@@ -6,6 +6,7 @@
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Config;
 	use App\Routes\Scheme\Pal;
@@ -20,6 +21,7 @@
 		use Controller;
 		use Middleware;
 		use Prefix;
+		use Domain;
 
 		private array $groupAttributesProperty;
 		private static array $traits = [];
