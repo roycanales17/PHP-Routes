@@ -9,9 +9,10 @@
 	{
 		private array $domain = [];
 
-		protected function RegisterDomain(string|array $domain): void
+		protected function RegisterDomain(string|array $domain): self
 		{
 			$this->domain[] = strtolower($domain);
+			return $this;
 		}
 
 		protected function DestroyDomain(): void
