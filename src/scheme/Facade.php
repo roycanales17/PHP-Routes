@@ -30,8 +30,7 @@
 				$this->setRoot($root);
 
 			if ($routes) {
-				$this->loadRoutes('initialize');
-				$this->loadRoutes('capture');
+				$this->loadRoutes();
 			}
 		}
 
@@ -89,7 +88,7 @@
 		 *
 		 * @throws Exception If a route file does not exist.
 		 */
-		private function loadRoutes(string $action): void
+		private function loadRoutes(): void
 		{
 			foreach ($this->getRoutes() as $route) {
 				$path = $this->buildPath($route);
