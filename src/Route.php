@@ -5,7 +5,7 @@
 	use Closure;
 	use App\Routes\Scheme\Facade;
 	use App\Routes\Requests\Builder\{Delete, Get, Patch, Post, Put};
-	use App\Routes\Configurations\Builder\{Controller, Group, Middleware, Prefix, Name};
+	use App\Routes\Configurations\Builder\{Controller, Group, Middleware, Prefix, Name, Domain, Resources};
 
 	/**
 	 * Class Route
@@ -23,7 +23,9 @@
 	 * @method static Controller controller(string $className) Registers a controller.
 	 * @method static Middleware middleware(string|array $action) Registers middleware for the route.
 	 * @method static Prefix prefix(string $prefix) Adds a prefix to the route URI.
-	 * @method static Name name(string $name)
+	 * @method static Name name(string $name) Sets the name for the routes.
+	 * @method static Resources resources(string|array $actions) Defines the actions available for resources.
+	 * @method static Domain domain(string $domain) Sets the domain for the routes.
 	 */
 
 	class Route extends Facade
