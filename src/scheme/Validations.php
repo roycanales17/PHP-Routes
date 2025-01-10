@@ -31,8 +31,8 @@
 				$method = $middleware[1];
 				$type = $middleware[2];
 
-				$instance = ($type === 'method') ? new $class : $class;
-				if (!($type === 'method' ? $instance->$method() : $instance::$method())) {
+				$instance = ($type === 'method') ? Pal::createInstance($class) : $class;
+				if (!($type === 'method' ? $instance?->$method() ?? false : $instance::$method())) {
 					return false;
 				}
 			}
