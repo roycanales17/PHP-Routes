@@ -7,11 +7,11 @@
 
 	trait Domain
 	{
-		private string $domain = '';
+		private array $domain = [];
 
-		protected function RegisterDomain(string $domain): void
+		protected function RegisterDomain(string|array $domain): void
 		{
-			$this->domain = strtolower($domain);
+			$this->domain[] = strtolower($domain);
 		}
 
 		protected function DestroyDomain(): void
@@ -27,13 +27,15 @@
 
 		protected function SetupDomain(): void
 		{
-			$domain = strtolower($this->getDomain());
-			if ($domain && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
-				Buffer::register('domain', $domain);
+			$domains = $this->getDomain();
+			if ($domains && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
+				foreach ($domains as $domain) {
+					Buffer::register('domain', $domain);
+				}
 			}
 		}
 
-		protected function getDomain(): string
+		protected function getDomain(): array
 		{
 			return $this->domain;
 		}

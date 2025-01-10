@@ -12,7 +12,7 @@
 
 	class Domain extends Config
 	{
-		private string $domainProperty;
+		private string|array $domainProperty;
 
 		use BaseDomain {
 			RegisterDomain as private domain;
@@ -33,7 +33,7 @@
 			RegisterMiddleware as public middleware;
 		}
 
-		function __construct(string $domain)
+		function __construct(string|array $domain)
 		{
 			$this->domainProperty = $domain;
 		}

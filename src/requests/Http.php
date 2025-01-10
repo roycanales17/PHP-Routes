@@ -23,9 +23,20 @@
 			$this->registerURI($uri);
 		}
 
+		private function setupDomain(): void
+		{
+			$globalDomain = Buffer::fetch('domain') ?? [];
+			$domains = method_exists($this, 'getDomain') ? $this->getDomain() : [];
+			$allowedDomains = array_merge($globalDomain, $domains);
+
+			if ($allowedDomains) {
+				$this->registerDomainName($allowedDomains);
+			}
+		}
+
 		private function setupRouteMiddleware(): void
 		{
-			$middlewares = method_exists($this, 'GetMiddlewares') ? $this?->GetMiddlewares() : [];
+			$middlewares = method_exists($this, 'GetMiddlewares') ? $this->GetMiddlewares() : [];
 			if ($globalMiddlewares = Buffer::fetch('middleware'))
 				$middlewares = array_merge($globalMiddlewares, $middlewares);
 
@@ -78,12 +89,13 @@
 		 */
 		public function __destruct()
 		{
+			$this->setupDomain();
 			$this->setupRouteName($routeName);
 			$this->setupRouteAction();
 			$this->setupRouteMiddleware();
 			$this->registerRoutes($prefixes = $this->getActivePrefix(), $routeName);
 
-			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
+			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params) && $this->validateDomain($this->getRequestDomain())) {
 
 				if (!Pal::requestMethod(Pal::baseClassName(get_called_class())))
 					return;

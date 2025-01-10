@@ -7,6 +7,7 @@
 	trait Protocol
 	{
 		private string $uri = '';
+		private array $domainNames = [];
 		private array $middlewares = [];
 		private string|array|Closure $actions = [];
 		private static bool $status = false;
@@ -19,6 +20,11 @@
 		protected function registerAction(string|array|Closure $action): void
 		{
 			$this->actions = $action;
+		}
+
+		protected function registerDomainName(array $domains): void
+		{
+			$this->domainNames = $domains;
 		}
 
 		protected function registerMiddlewares(array $middleware): void
@@ -41,6 +47,11 @@
 			return $this->uri;
 		}
 
+		protected function getDomainName(): array
+		{
+			return $this->domainNames;
+		}
+
 		protected function getActions(): string|array|Closure
 		{
 			return $this->actions;
@@ -49,6 +60,11 @@
 		protected function fetchMiddlewares(): array
 		{
 			return $this->middlewares;
+		}
+
+		protected function getRequestDomain(): string
+		{
+			return $_SERVER['HTTP_HOST'] ?? 'localhost';
 		}
 
 		private function getActivePrefix(): array
@@ -75,7 +91,8 @@
 				'uri' => $prefix . '/' . ltrim($this->getURI(), '/'),
 				'actions' => $action,
 				'middlewares' => $this->fetchMiddlewares(),
-				'name' => $routeName
+				'domains' => $this->getDomainName(),
+				'name' => $routeName,
 			]);
 		}
 	}

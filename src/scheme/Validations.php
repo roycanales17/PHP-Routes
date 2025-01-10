@@ -41,6 +41,28 @@
 		}
 
 		/**
+		 * Validate if the provided domain is allowed.
+		 *
+		 * This method checks if a given domain is part of the allowed domains for the application.
+		 * Allowed domains can be retrieved dynamically by calling a `getDomainName` method if it exists.
+		 * The comparison is case-insensitive to ensure consistent matching.
+		 *
+		 * @param string $domain The domain to validate.
+		 * @return bool True if the domain is allowed, false otherwise.
+		 */
+		protected function validateDomain(string $domain): bool
+		{
+			if ($domain) {
+				$allowedDomains = method_exists($this, 'getDomainName') ? $this->getDomainName() : [];
+				if ($allowedDomains && !in_array(strtolower($domain), array_map('strtolower', $allowedDomains))) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/**
 		 * Validate the provided URI against the current request URI.
 		 *
 		 * This method checks if the requested URI matches the defined route URI, accounting for dynamic segments.
