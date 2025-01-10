@@ -53,14 +53,4 @@
 		{
 			return basename(str_replace('\\', '/', $className));
 		}
-
-		public static function requestMethod(string $method = ''): string|bool
-		{
-			$request = strtoupper($_SERVER['REQUEST_METHOD']);
-			if ($method) {
-				return $request === strtoupper($method);
-			}
-
-			return $request;
-		}
 	}

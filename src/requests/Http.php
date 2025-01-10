@@ -95,9 +95,12 @@
 			$this->setupRouteMiddleware();
 			$this->registerRoutes($prefixes = $this->getActivePrefix(), $routeName);
 
-			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params) && $this->validateDomain($this->getRequestDomain())) {
+			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
 
-				if (!Pal::requestMethod(Pal::baseClassName(get_called_class())))
+				if (!$this->validateDomain($this->getRequestDomain()))
+					return;
+
+				if (!$this->validateMethodRequest(Pal::baseClassName(get_called_class())))
 					return;
 
 				if (!$this->validateMiddleware($this->fetchMiddlewares())) {

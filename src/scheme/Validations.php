@@ -63,6 +63,25 @@
 		}
 
 		/**
+		 * Validate if the provided request method matches the expected method.
+		 *
+		 * This method checks if the current HTTP request method matches the specified method.
+		 * It compares the methods in a case-insensitive manner to avoid mismatches.
+		 *
+		 * @param string $method The HTTP method (e.g., 'GET', 'POST') to validate.
+		 * @return bool True if the request method matches, false otherwise.
+		 */
+		protected function validateMethodRequest(string $method): bool
+		{
+			$request = strtoupper($_SERVER['REQUEST_METHOD'] ?? '');
+			if ($method) {
+				return $request === strtoupper($method);
+			}
+
+			return false;
+		}
+
+		/**
 		 * Validate the provided URI against the current request URI.
 		 *
 		 * This method checks if the requested URI matches the defined route URI, accounting for dynamic segments.
