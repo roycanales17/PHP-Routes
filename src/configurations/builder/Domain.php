@@ -37,4 +37,9 @@
 		{
 			$this->domainProperty = $domain;
 		}
+
+		protected function register(): void
+		{
+			$this->RegisterDomain($this->domainProperty);
+		}
 	}
