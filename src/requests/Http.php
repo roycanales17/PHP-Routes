@@ -18,6 +18,7 @@
 		protected string $uri = '';
 		protected array $middlewares = [];
 		protected string|array|Closure $actions = [];
+		protected static bool $found = false;
 
 		public function __construct(string $uri, mixed $actions)
 		{
@@ -97,6 +98,7 @@
 
 		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void
 		{
+			self::$found = true;
 			ob_start(); $closure();
 			Route::register(ob_get_clean(), $code, $type);
 		}
@@ -111,7 +113,7 @@
 			$this->setupRouteMiddleware();
 			$this->registerRoutes($prefixes, $routeName);
 
-			if ($this->validateURI($this->uri, $prefixes, $params)) {
+			if (!self::$found && $this->validateURI($this->uri, $prefixes, $params)) {
 
 				if (!Pal::requestMethod(Pal::baseClassName(get_called_class())))
 					return;
