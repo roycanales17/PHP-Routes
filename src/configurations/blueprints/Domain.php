@@ -9,9 +9,16 @@
 	{
 		private array $domain = [];
 
-		protected function RegisterDomain(string|array $domain): self
+		protected function RegisterDomain(string|array $domains): self
 		{
-			$this->domain[] = strtolower($domain);
+			if (is_string($domains)) {
+				$domains = [$domains];
+			}
+
+			foreach ($domains as $domain) {
+				$this->domain[] = strtolower($domain);
+			}
+
 			return $this;
 		}
 
