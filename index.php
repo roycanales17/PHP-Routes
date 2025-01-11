@@ -7,7 +7,7 @@
             'App\\Routes\\' => __DIR__ . '/src/'
         ];
         foreach ($namespaces as $namespace => $baseDir) {
-            if (strpos($class, $namespace) === 0) {
+            if (str_starts_with($class, $namespace)) {
                 $relativeClass = str_replace($namespace, '', $class);
                 $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
 
@@ -22,7 +22,13 @@
 		'tests/web.php',
 		'tests/test.php'
 	])->routes(function (array $routes) {
-		// Retrieve here all the routes listed...
+		/**
+		 * Retrieve here all the routes listed...
+		 *
+		 * echo '<pre>';
+		 * print_r($routes);
+		 * echo '</pre>';
+		 */
 	})->captured(function(mixed $content, int $code, string $type) {
 		http_response_code($code);
 		header('Content-Type: ' . $type);
