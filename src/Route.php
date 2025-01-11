@@ -24,7 +24,6 @@
 	 * @method static Middleware middleware(string|array $action) Registers middleware for the route.
 	 * @method static Prefix prefix(string $prefix) Adds a prefix to the route URI.
 	 * @method static Name name(string $name) Sets the name for the routes.
-	 * @method static Resources resources(string|array $actions) Defines the actions available for resources.
 	 * @method static Domain domain(string|array $domain) Sets the domain for the routes.
 	 */
 
