@@ -34,7 +34,11 @@
 			if (isset(self::$routes[$type]))
 				return self::$routes[$type];
 
-			$path = getcwd() . "/src/$type/builder";
+			$baseDir = str_contains(__DIR__, '/vendor/')
+				? dirname(__DIR__)
+				: getcwd() . "/src";
+
+			$path = $baseDir . "/$type/builder";
 			foreach (glob($path . '/*.php') as $file)
 				self::$routes[$type][] = strtolower(pathinfo($file, PATHINFO_FILENAME));
 
