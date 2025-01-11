@@ -118,7 +118,7 @@
 					if (isset($params[$key])) {
 						$value = $params[$key];
 
-						if (!preg_match($pattern, $value)) {
+						if (!preg_match("/$pattern/", $value)) {
 							return false;
 						}
 					}
