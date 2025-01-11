@@ -9,6 +9,7 @@
 		private string $uri = '';
 		private array $domainNames = [];
 		private array $middlewares = [];
+		private array $expressions = [];
 		private string|array|Closure $actions = [];
 		private static bool $status = false;
 
@@ -32,9 +33,19 @@
 			$this->middlewares = $middleware;
 		}
 
+		protected function registerExpressions(array $expressions): void
+		{
+			$this->expressions = $expressions;
+		}
+
 		protected function toggleStatus(bool $found): void
 		{
 			self::$status = $found;
+		}
+
+		protected function getExpressions(): array
+		{
+			return $this->expressions;
 		}
 
 		protected function getRouteStatus(): bool
@@ -89,10 +100,11 @@
 
 			Buffer::register('routes', [
 				'uri' => $prefix . '/' . ltrim($this->getURI(), '/'),
+				'name' => $routeName,
 				'actions' => $action,
 				'middlewares' => $this->fetchMiddlewares(),
-				'domains' => $this->getDomainName(),
-				'name' => $routeName,
+				'expressions' => $this->getExpressions(),
+				'domains' => $this->getDomainName()
 			]);
 		}
 	}

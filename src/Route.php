@@ -5,7 +5,7 @@
 	use Closure;
 	use App\Routes\Scheme\Facade;
 	use App\Routes\Requests\Builder\{Delete, Get, Patch, Post, Put};
-	use App\Routes\Configurations\Builder\{Controller, Group, Middleware, Prefix, Name, Domain, Resources};
+	use App\Routes\Configurations\Builder\{Controller, Group, Middleware, Prefix, Name, Domain, Resources, Where};
 
 	/**
 	 * Class Route

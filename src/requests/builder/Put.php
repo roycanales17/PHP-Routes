@@ -6,11 +6,15 @@
 	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Where;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Requests\Http;
 
 	class Put extends Http
 	{
+		use Where {
+			RegisterWhere as public where;
+		}
 		use Middleware {
 			RegisterMiddleware as public middleware;
 		}

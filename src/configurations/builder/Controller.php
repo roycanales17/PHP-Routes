@@ -3,6 +3,7 @@
 	namespace App\Routes\Configurations\Builder;
 
 	use App\Routes\Configurations\Config;
+	use App\Routes\Configurations\Blueprints\Where;
 	use App\Routes\Configurations\Blueprints\Group;
 	use App\Routes\Configurations\Blueprints\Middleware;
 	use App\Routes\Configurations\Blueprints\Prefix;
@@ -16,6 +17,9 @@
 
 		use BaseController {
 			RegisterController as private controller;
+		}
+		use Where {
+			RegisterWhere as public where;
 		}
 		use Domain {
 			RegisterDomain as public domain;

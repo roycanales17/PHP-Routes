@@ -7,6 +7,7 @@
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Group;
 	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Where;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Config;
 
@@ -16,6 +17,9 @@
 
 		use BaseMiddleware {
 			RegisterMiddleware as private middleware;
+		}
+		use Where {
+			RegisterWhere as public where;
 		}
 		use Domain {
 			RegisterDomain as public domain;

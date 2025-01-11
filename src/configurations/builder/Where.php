@@ -2,24 +2,25 @@
 
 	namespace App\Routes\Configurations\Builder;
 
+	use App\Routes\Configurations\Blueprints\Where as BaseWhere;
 	use App\Routes\Configurations\Blueprints\Domain;
-	use App\Routes\Configurations\Blueprints\Name as BaseName;
+	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Group;
 	use App\Routes\Configurations\Blueprints\Middleware;
-	use App\Routes\Configurations\Blueprints\Where;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Config;
 
-	class Name extends Config
+	class Where extends Config
 	{
-		private string $nameProperty;
+		private string $whereKeyProperty;
+		private string $whereValueProperty;
 
-		use BaseName {
-			RegisterName as private name;
+		use BaseWhere {
+			RegisterWhere as private where;
 		}
-		use Where {
-			RegisterWhere as public where;
+		use Name {
+			RegisterName as public name;
 		}
 		use Domain {
 			RegisterDomain as public domain;
@@ -37,13 +38,14 @@
 			RegisterController as public controller;
 		}
 
-		function __construct(string $name)
+		function __construct(string $key, string $expression)
 		{
-			$this->nameProperty = $name;
+			$this->whereKeyProperty = $key;
+			$this->whereValueProperty = $expression;
 		}
 
 		protected function register(): void
 		{
-			$this->RegisterName($this->nameProperty);
+			$this->RegisterWhere($this->whereKeyProperty, $this->whereValueProperty);
 		}
 	}

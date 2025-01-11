@@ -5,6 +5,7 @@
 	use App\Routes\Configurations\Blueprints\Group as BaseGroup;
 	use App\Routes\Configurations\Blueprints\Controller;
 	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Where;
 	use App\Routes\Configurations\Blueprints\Prefix;
 	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Name;
@@ -22,6 +23,7 @@
 		use Middleware;
 		use Prefix;
 		use Domain;
+		use Where;
 
 		private array $groupAttributesProperty;
 		private static array $traits = [];

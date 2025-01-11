@@ -82,6 +82,53 @@
 		}
 
 		/**
+		 * Validates parameters against a set of expressions.
+		 *
+		 * This method checks if the provided parameters match the specified patterns in the expressions array.
+		 * Each expression consists of a key and a regex pattern. If a parameter corresponding to a key exists,
+		 * its value is validated against the provided regex pattern.
+		 *
+		 * The validation fails if:
+		 * - Any parameter value does not match its respective pattern.
+		 * - The expressions array is non-empty, but the params array is empty.
+		 *
+		 * @param array $expressions An array of expressions, where each expression is an array with:
+		 *                           - string $key: The parameter name to validate.
+		 *                           - string $pattern: The regex pattern to validate the parameter value.
+		 * @param array $params      An associative array of parameters to validate.
+		 *                           The keys correspond to the parameter names and values are their respective data.
+		 *
+		 * @return bool True if all parameters match their respective patterns, false otherwise.
+		 */
+		protected function validateParamsExpressions(array $expressions, array $params): bool
+		{
+			if ($expressions) {
+
+				if (empty($params))
+					return false;
+
+				foreach ($expressions as $expression) {
+
+					if (!is_array($expression) || count($expression) < 2)
+						continue;
+
+					$key = strtolower($expression[0]);
+					$pattern = $expression[1];
+
+					if (isset($params[$key])) {
+						$value = $params[$key];
+
+						if (!preg_match($pattern, $value)) {
+							return false;
+						}
+					}
+				}
+			}
+
+			return true;
+		}
+
+		/**
 		 * Validate the provided URI against the current request URI.
 		 *
 		 * This method checks if the requested URI matches the defined route URI, accounting for dynamic segments.
@@ -114,6 +161,9 @@
 			} else {
 				$matched = -1;
 			}
+
+			if (is_null($params))
+				$params = [];
 
 			return ($matched === count($route_uri));
 		}

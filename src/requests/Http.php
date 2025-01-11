@@ -45,6 +45,17 @@
 			}
 		}
 
+		private function setupRouteParamsExpression(): void
+		{
+			$expressions = method_exists($this, 'getWhereExpression') ? $this->getWhereExpression() : [];
+			$globalExpressions = Buffer::fetch('where') ?? [];
+
+			$activeExpressions = array_merge($globalExpressions, $expressions);
+			if ($activeExpressions) {
+				$this->registerExpressions($activeExpressions);
+			}
+		}
+
 		private function setupRouteAction(): void
 		{
 			if (is_string($this->getActions())) {
@@ -76,10 +87,11 @@
 			}
 		}
 
-		private function capture(Closure $closure, int $code = 200, string $type = 'text/html'): void
+		private function capture(Closure|string $closure, int $code = 200, string $type = 'text/html'): void
 		{
 			ob_start();
-			$closure();
+			is_string($closure) ? print($closure) : $closure();
+
 			Route::register(ob_get_clean(), $code, $type);
 			$this->toggleStatus(true);
 		}
@@ -93,9 +105,15 @@
 			$this->setupRouteName($routeName);
 			$this->setupRouteAction();
 			$this->setupRouteMiddleware();
+			$this->setupRouteParamsExpression();
 			$this->registerRoutes($prefixes = $this->getActivePrefix(), $routeName);
 
 			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
+
+				if (!$this->validateParamsExpressions($this->getExpressions(), $params)) {
+					$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
+					return;
+				}
 
 				if (!$this->validateDomain($this->getRequestDomain()))
 					return;
@@ -104,9 +122,7 @@
 					return;
 
 				if (!$this->validateMiddleware($this->fetchMiddlewares())) {
-					$this->capture(function () {
-						echo(json_encode(['message' => 'Unauthorized']));
-					}, 401, 'application/json');
+					$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
 					return;
 				}
 
