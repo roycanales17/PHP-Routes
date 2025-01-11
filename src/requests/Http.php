@@ -110,16 +110,16 @@
 
 			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
 
-				if (!$this->validateParamsExpressions($this->getExpressions(), $params)) {
-					$this->capture(json_encode(['message' => 'Bad Request']), 400, 'application/json');
-					return;
-				}
-
 				if (!$this->validateDomain($this->getRequestDomain()))
 					return;
 
 				if (!$this->validateMethodRequest(Pal::baseClassName(get_called_class())))
 					return;
+
+				if (!$this->validateParamsExpressions($this->getExpressions(), $params)) {
+					$this->capture(json_encode(['message' => 'Bad Request']), 400, 'application/json');
+					return;
+				}
 
 				if (!$this->validateMiddleware($this->fetchMiddlewares())) {
 					$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
