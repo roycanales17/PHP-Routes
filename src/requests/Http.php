@@ -111,7 +111,7 @@
 			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
 
 				if (!$this->validateParamsExpressions($this->getExpressions(), $params)) {
-					$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
+					$this->capture(json_encode(['message' => 'Bad Request']), 400, 'application/json');
 					return;
 				}
 
