@@ -126,8 +126,8 @@
 					return;
 				}
 
-				$this->capture( function () {
-					echo $this->performAction($this->getActions(), $params ?? []);
+				$this->capture( function () use ($params) {
+					echo $this->performAction($this->getActions(), $params);
 				});
 			}
 		}
