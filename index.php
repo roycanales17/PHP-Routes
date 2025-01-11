@@ -19,8 +19,7 @@
     });
 
 	Route::configure(__DIR__, [
-		'tests/web.php',
-		'tests/test.php'
+		'tests/web.php'
 	])->routes(function (array $routes) {
 		/**
 		 * Retrieve here all the routes listed...
