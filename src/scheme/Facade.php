@@ -99,8 +99,10 @@
 				}
 			}
 
-			if (!$this->isResolved())
-				self::register(json_encode(['message' => '404 Page']), 404, 'application/json');
+			if (!$this->isResolved()) {
+				http_response_code(404);
+				self::register(json_encode(['message' => '404 Page']), 'application/json');
+			}
 		}
 
 		/**
@@ -122,7 +124,7 @@
 		 */
 		public function captured(Closure $closure): void
 		{
-			$closure($this->getContent(), $this->getResponseCode(), $this->getResponseType());
+			$closure($this->getContent(), http_response_code(), $this->getResponseType());
 		}
 
 		/**
@@ -145,13 +147,11 @@
 		 * Registers the content and HTTP response code for the current route.
 		 *
 		 * @param mixed $content The content to be registered.
-		 * @param int $code The HTTP response code to be set.
 		 */
-		public static function register(mixed $content, int $code, string $type): void
+		public static function register(mixed $content, string $type): void
 		{
 			self::setStaticResolved(true);
 			self::setStaticContent($content);
-			self::setStaticHttpCode($code);
 			self::setStaticResponseType($type);
 		}
 	}

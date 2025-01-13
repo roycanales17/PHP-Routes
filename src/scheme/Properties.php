@@ -14,7 +14,6 @@
 		private static string $root = '';
 		private static mixed $content = '';
 		private static array $routes = [];
-		private static int $responseCode = 200;
 		private static bool $resolved = false;
 		private static string $responseType = 'text/html';
 
@@ -66,11 +65,6 @@
 			return self::$content;
 		}
 
-		protected function getResponseCode(): int
-		{
-			return self::$responseCode;
-		}
-
 		public function getResponseType(): string
 		{
 			return self::$responseType;
@@ -89,11 +83,6 @@
 		protected static function setStaticResolved(bool $opt): void
 		{
 			self::$resolved = $opt;
-		}
-
-		protected static function setStaticHttpCode(int $code): void
-		{
-			self::$responseCode = $code;
 		}
 
 		protected static function setStaticContent(string $content): void

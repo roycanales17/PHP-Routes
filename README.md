@@ -164,7 +164,6 @@ The route feature allows you to manage HTTP requests easily in your application.
          */
    })->captured(function (mixed $content, int $code, string $type) {
         // Handle the response here
-        http_response_code($code); // Set the HTTP status code.
         header('Content-Type: ' . $type); // Set the content type (e.g., 'text/html', 'application/json').
         echo $content; // Output the response content.
    });

@@ -90,9 +90,9 @@
 		private function capture(Closure|string $closure, int $code = 200, string $type = 'text/html'): void
 		{
 			ob_start();
+			http_response_code($code);
 			is_string($closure) ? print($closure) : $closure();
-
-			Route::register(ob_get_clean(), $code, $type);
+			Route::register(ob_get_clean(), $type);
 			$this->toggleStatus(true);
 		}
 

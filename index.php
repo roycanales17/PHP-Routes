@@ -29,7 +29,6 @@
 		 * echo '</pre>';
 		 */
 	})->captured(function(mixed $content, int $code, string $type) {
-		http_response_code($code);
 		header('Content-Type: ' . $type);
 		echo $content;
 	});
