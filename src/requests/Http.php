@@ -127,7 +127,13 @@
 				}
 
 				$this->capture( function () use ($params) {
-					echo $this->performAction($this->getActions(), $params);
+					$captured = $this->performAction($this->getActions(), $params);
+
+					if (is_array($captured)) {
+						echo(json_encode($captured, JSON_PRETTY_PRINT));
+					} else {
+						echo($captured);
+					}
 				});
 			}
 		}
