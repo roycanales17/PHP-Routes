@@ -164,6 +164,7 @@ The route feature allows you to manage HTTP requests easily in your application.
          */
    })->captured(function (mixed $content, int $code, string $type) {
         // Handle the response here
+        http_response_code($code);
         header('Content-Type: ' . $type); // Set the content type (e.g., 'text/html', 'application/json').
         echo $content; // Output the response content.
    });
@@ -176,17 +177,6 @@ In the example below, we use the Route::get() method to register a route for the
   <?php
   
    use App\Routes\Route;
-   
-   /*
-   |--------------------------------------------------------------------------
-   | Web Routes
-   |--------------------------------------------------------------------------
-   |
-   | Here is where you can register web routes for your application. These
-   | routes are loaded by the RouteServiceProvider within a group which
-   | contains the "web" middleware group. Now create something great!
-   |
-   */
    
    Route::get('/', function () {
       echo 'Hello World!';
