@@ -14,5 +14,5 @@
     */
 
 	Route::get('/', function () {
-        echo 'Hello World!';
-    });
+		echo 'Hello World!';
+	});

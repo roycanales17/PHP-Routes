@@ -2,6 +2,8 @@
 
 	namespace App\Routes\Scheme;
 
+	use ReflectionException;
+
 	/**
 	 * Trait RouteValidation
 	 *
@@ -11,6 +13,8 @@
 	 */
 	trait Validations
 	{
+		use Reflections;
+
 		/**
 		 * Assign middleware to the route.
 		 *
@@ -23,6 +27,7 @@
 		 * @param array $middlewares The middleware to be attached to the route. It can be a single middleware
 		 *                                 as a string or an array of middleware.
 		 * @return bool
+		 * @throws ReflectionException
 		 */
 		protected function validateMiddleware(array $middlewares): bool
 		{
@@ -31,9 +36,13 @@
 				$method = $middleware[1];
 				$type = $middleware[2];
 
-				$instance = ($type === 'method') ? Pal::createInstance($class) : $class;
-				if (!($type === 'method' ? $instance?->$method() ?? false : $instance::$method())) {
-					return false;
+				if ($class === 'procedural') {
+					return $this->performAction($method);
+				} else {
+					$instance = ($type === 'method') ? Pal::createInstance($class) : $class;
+					if (!($type === 'method' ? $instance?->$method() ?? false : $instance::$method())) {
+						return false;
+					}
 				}
 			}
 

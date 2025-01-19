@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
+	use App\Routes\Route;
 	use Closure;
 	use Exception;
 
@@ -18,7 +19,7 @@
 		 * @param string $root The root path for the routes.
 		 * @throws Exception
 		 */
-		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '')
+		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [])
 		{
 			$this->setMethod($method);
 			$this->setParams($params);
@@ -31,6 +32,12 @@
 
 			if ($routes) {
 				$this->loadRoutes();
+			}
+
+			if ($response) {
+				self::setStaticResolved(true);
+				self::setStaticContent($response['content'] ?? '');
+				self::setStaticResponseType($response['type'] ?? '');
 			}
 		}
 
@@ -101,7 +108,10 @@
 
 			if (!$this->isResolved()) {
 				http_response_code(404);
-				self::register(json_encode(['message' => '404 Page']), 'application/json');
+				new Route(response: [
+					'content' => json_encode(['message' => '404 Page']),
+					'type' => 'application/json'
+				]);
 			}
 		}
 
@@ -141,17 +151,5 @@
 		private function performRoute(string $method, string $type): object
 		{
 			return Pal::createInstance("App\\Routes\\$type\\Builder\\$method", $this->params[0] ?? '', $this->params[1] ?? []);
-		}
-
-		/**
-		 * Registers the content and HTTP response code for the current route.
-		 *
-		 * @param mixed $content The content to be registered.
-		 */
-		public static function register(mixed $content, string $type): void
-		{
-			self::setStaticResolved(true);
-			self::setStaticContent($content);
-			self::setStaticResponseType($type);
 		}
 	}

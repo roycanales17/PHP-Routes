@@ -18,6 +18,7 @@
 					if (str_contains($middleware, '@')) {
 						$middleware = explode('@', $middleware);
 						$middleware[] = 'method';
+
 					} else {
 
 						$middleware = explode('::', $middleware);
@@ -31,6 +32,12 @@
 						$middleware = [];
 
 				} else {
+
+					if (function_exists($middleware)) {
+						$middleware = ['procedural', $middleware, 'function'];
+						goto _register;
+					}
+
 					$controller = method_exists($this, 'GetControllerName') ? $this->GetControllerName() : '';
 					if ($controller) {
 						if (method_exists($controller, $middleware)) {
@@ -76,6 +83,8 @@
 					$middleware = [];
 				}
 			}
+
+			_register:
 
 			if ($middleware)
 				$this->middleware[] = $middleware;

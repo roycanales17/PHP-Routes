@@ -1,34 +1,9 @@
 <?php
 
-	use App\Routes\Route;
+	spl_autoload_register(fn($class) => array_map(fn($namespace, $baseDir) => str_starts_with($class, $namespace) && file_exists($file = $baseDir . str_replace('\\', '/', str_replace($namespace, '', $class)) . '.php') && require_once $file, array_keys($namespaces = ['App\\Routes\\' => __DIR__ . '/src/']), $namespaces));
 
-    spl_autoload_register(function ($class) {
-        $namespaces = [
-            'App\\Routes\\' => __DIR__ . '/src/'
-        ];
-        foreach ($namespaces as $namespace => $baseDir) {
-            if (str_starts_with($class, $namespace)) {
-                $relativeClass = str_replace($namespace, '', $class);
-                $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-
-                if (file_exists($file)) {
-                    require_once $file;
-                }
-            }
-        }
-    });
-
-	Route::configure(__DIR__, [
-		'tests/web.php'
-	])->routes(function (array $routes) {
-		/**
-		 * Retrieve here all the routes listed...
-		 *
-		 * echo '<pre>';
-		 * print_r($routes);
-		 * echo '</pre>';
-		 */
-	})->captured(function(mixed $content, int $code, string $type) {
-		header('Content-Type: ' . $type);
+	App\Routes\Route::configure(__DIR__, [
+		'routes/web.php'
+	])->captured(function($content) {
 		echo $content;
 	});

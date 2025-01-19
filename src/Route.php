@@ -25,6 +25,7 @@
 	 * @method static Prefix prefix(string $prefix) Adds a prefix to the route URI.
 	 * @method static Name name(string $name) Sets the name for the routes.
 	 * @method static Domain domain(string|array $domain) Sets the domain for the routes.
+	 * @method static Where where(string $key, string $expression) Registers a parameter pattern for the route.
 	 */
 
 	class Route extends Facade

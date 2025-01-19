@@ -2,14 +2,15 @@
 
 	namespace App\Routes\Requests;
 
+	use Closure;
+	use ReflectionException;
+
 	use App\Routes\Route;
 	use App\Routes\Scheme\Buffer;
 	use App\Routes\Scheme\Pal;
 	use App\Routes\Scheme\Protocol;
 	use App\Routes\Scheme\Reflections;
 	use App\Routes\Scheme\Validations;
-	use Closure;
-	use ReflectionException;
 
 	abstract class Http
 	{
@@ -87,12 +88,26 @@
 			}
 		}
 
-		private function capture(Closure|string $closure, int $code = 200, string $type = 'text/html'): void
+		private function capture(Closure|string $closure, int $code = 200, string $type = ''): void
 		{
 			ob_start();
 			http_response_code($code);
 			is_string($closure) ? print($closure) : $closure();
-			Route::register(ob_get_clean(), $type);
+
+			if (!$type) {
+				$headers = getallheaders();
+				if (isset($headers['Content-Type'])) {
+					$contentType = $headers['Content-Type'];
+					$type = $contentType;
+				} else {
+					$type = 'text/html';
+				}
+			}
+
+			new Route(response: [
+				'content' => ob_get_clean(),
+				'type' => $type,
+			]);
 			$this->toggleStatus(true);
 		}
 
