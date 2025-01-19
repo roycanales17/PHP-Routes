@@ -4,5 +4,5 @@
 
 	trait Resources
 	{
-
+		// Todo: Resources will be available soon
 	}
