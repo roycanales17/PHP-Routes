@@ -207,7 +207,7 @@
 		 */
 		private function separateSubDirectories(?string $value): array
 		{
-			return array_values(array_filter(explode('/', $value), function ($value) {
+			return array_values(array_filter(explode('/', strtok($value, '?')), function ($value) {
 				return $value !== "";
 			}));
 		}
