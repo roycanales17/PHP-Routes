@@ -65,7 +65,7 @@
 			return self::$content;
 		}
 
-		public function getResponseType(): string
+		protected function getResponseType(): string
 		{
 			return self::$responseType;
 		}
