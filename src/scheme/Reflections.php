@@ -32,32 +32,29 @@
 			$paramsValue = [];
 			$reflection = $this->getReflection($action);
 
-			if ($params) {
-				$paramsValue = $params;
+			foreach ($reflection->getParameters() as $param) {
 
-			} else {
-				foreach ($reflection->getParameters() as $param) {
+				$type = $param->getType();
+				$typeName = $type?->getName();
+				$key = $param->getName();
+				$value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
 
-					$type = $param->getType();
-					$typeName = $type?->getName();
-					$key = $param->getName();
-					$value = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+				if ($typeName && class_exists($typeName)) {
+					$paramsValue[] = new $typeName();
 
-					if ($typeName && class_exists($typeName)) {
-						$paramsValue[] = new $typeName();
-
+				} elseif ($params && in_array($key, array_keys($params))) {
+					$paramsValue[] = $params[$key];
+				} else {
+					if (!$value) {
+						$paramsValue[] = match ($typeName ?? 'default') {
+							'int', 'float' => 0,
+							'string'       => '',
+							'bool'         => false,
+							'array'        => [],
+							default        => null,
+						};
 					} else {
-						if (!$value) {
-							$paramsValue[] = match ($typeName ?? 'default') {
-								'int', 'float' => 0,
-								'string'       => '',
-								'bool'         => false,
-								'array'        => [],
-								default        => null,
-							};
-						} else {
-							$paramsValue[] = $value;
-						}
+						$paramsValue[] = $value;
 					}
 				}
 			}
