@@ -31,16 +31,23 @@
 
 		public static function getRoutes(string $type): array
 		{
-			if (isset(self::$routes[$type]))
+			if (isset(self::$routes[$type])) {
 				return self::$routes[$type];
+			}
 
 			$baseDir = str_contains(__DIR__, '/vendor/')
 				? dirname(__DIR__)
 				: getcwd() . "/src";
 
 			$path = $baseDir . "/$type/builder";
-			foreach (glob($path . '/*.php') as $file)
-				self::$routes[$type][] = strtolower(pathinfo($file, PATHINFO_FILENAME));
+
+			if (is_dir($path)) {
+				foreach (scandir($path) as $file) {
+					if ($file !== '.' && $file !== '..' && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+						self::$routes[$type][] = strtolower(pathinfo($file, PATHINFO_FILENAME));
+					}
+				}
+			}
 
 			return self::$routes[$type] ?? [];
 		}

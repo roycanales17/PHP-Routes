@@ -72,7 +72,7 @@
 
 		protected function buildPath(string $path): string
 		{
-			return $this->getRoot() . "/". rtrim($path, '.php') . '.php';
+			return $this->getRoot() . "/" . preg_replace('/\.php$/', '', $path) . '.php';
 		}
 
 		protected function isResolved(): bool
