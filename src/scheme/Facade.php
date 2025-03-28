@@ -25,6 +25,9 @@
 			$this->setMethod($method);
 			$this->setParams($params);
 
+			if ($this->isResolved())
+				return;
+
 			if ($reset)
 				$this->refresh();
 
