@@ -94,9 +94,13 @@
 			}
 
 			$prefix = '';
-			if ($prefixes) {
+			$globalPrefix = Pal::getGlobalPrefix();
+
+			if ($globalPrefix)
+				$prefix .= rtrim($globalPrefix, '/');
+
+			if ($prefixes)
 				$prefix .= '/'. trim(implode('/', $prefixes), '/');
-			}
 
 			Buffer::register('routes', [
 				'uri' => $prefix . '/' . ltrim($this->getURI(), '/'),

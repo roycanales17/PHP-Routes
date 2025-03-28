@@ -17,6 +17,11 @@
 		private static bool $resolved = false;
 		private static string $responseType = 'text/html';
 
+		protected function setGlobalPrefix(string $prefix): void
+		{
+			Pal::registerGlobalPrefix($prefix);
+		}
+
 		protected function setParams(array $params): void
 		{
 			$this->params = $params;

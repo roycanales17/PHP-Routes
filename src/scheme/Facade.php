@@ -17,12 +17,16 @@
 		 * @param array $params The parameters for the route.
 		 * @param array $routes An array of routes to be registered.
 		 * @param string $root The root path for the routes.
+		 * @param string $prefix Global prefix for all the routes.
 		 * @throws Exception
 		 */
-		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [])
+		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string $prefix = '')
 		{
 			$this->setMethod($method);
 			$this->setParams($params);
+
+			if ($prefix)
+				$this->setGlobalPrefix($prefix);
 
 			if ($routes)
 				$this->setRoutes($routes);
@@ -30,9 +34,8 @@
 			if ($root)
 				$this->setRoot($root);
 
-			if ($routes) {
+			if ($routes)
 				$this->loadRoutes();
-			}
 
 			if ($response) {
 				self::setStaticResolved(true);

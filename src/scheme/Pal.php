@@ -8,6 +8,12 @@
 	class Pal
 	{
 		private static array $routes = [];
+		private static string $prefix = '';
+
+		public static function registerGlobalPrefix(string $prefix): void
+		{
+			self::$prefix = ($cleanedPrefix = trim($prefix, '/')) !== '' ? "/{$cleanedPrefix}/" : "";
+		}
 
 		public static function performPrivateMethod(object $instance, string $methodName, ...$params):? object
 		{
@@ -27,6 +33,11 @@
 			} catch (ReflectionException $e) {
 				return false;
 			}
+		}
+
+		public static function getGlobalPrefix(): string
+		{
+			return self::$prefix;
 		}
 
 		public static function getRoutes(string $type): array
