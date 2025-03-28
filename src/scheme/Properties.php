@@ -17,13 +17,9 @@
 		private static bool $resolved = false;
 		private static string $responseType = 'text/html';
 
-		protected function setGlobalPrefix(string|bool $prefix): void
+		protected function setGlobalPrefix(string $prefix): void
 		{
-			if (is_bool($prefix)) {
-				Pal::registerGlobalPrefix('');
-			} else {
-				Pal::registerGlobalPrefix($prefix);
-			}
+			Pal::registerGlobalPrefix($prefix);
 		}
 
 		protected function setParams(array $params): void
@@ -107,5 +103,14 @@
 		protected static function setStaticRoot(string $root): void
 		{
 			self::$root = $root;
+		}
+
+		protected function refresh(): void
+		{
+			self::$root = '';
+			self::$content = '';
+			self::$routes = [];
+			self::$resolved = false;
+			self::$responseType = 'text/html';
 		}
 	}

@@ -17,15 +17,18 @@
 		 * @param array $params The parameters for the route.
 		 * @param array $routes An array of routes to be registered.
 		 * @param string $root The root path for the routes.
-		 * @param string|bool $prefix Global prefix for all the routes.
+		 * @param string $prefix Global prefix for all the routes.
 		 * @throws Exception
 		 */
-		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string|bool $prefix = '')
+		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string $prefix = '', bool $reset = false)
 		{
 			$this->setMethod($method);
 			$this->setParams($params);
 
-			if ($prefix || is_bool($prefix))
+			if ($reset)
+				$this->refresh();
+
+			if ($prefix)
 				$this->setGlobalPrefix($prefix);
 
 			if ($routes)

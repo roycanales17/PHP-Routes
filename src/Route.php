@@ -30,7 +30,7 @@
 
 	class Route extends Facade
 	{
-		public static function configure(string $root, array $routePaths, string|bool $prefix = ''): self {
-			return new static(routes: $routePaths, root: $root, prefix: $prefix);
+		public static function configure(string $root, array $routePaths, string $prefix = ''): self {
+			return new static(routes: $routePaths, root: $root, prefix: $prefix, reset: true);
 		}
 	}
