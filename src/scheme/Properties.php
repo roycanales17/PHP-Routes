@@ -110,6 +110,7 @@
 			self::$root = '';
 			self::$content = '';
 			self::$routes = [];
+			self::$resolved = false;
 			self::$responseType = 'text/html';
 		}
 	}
