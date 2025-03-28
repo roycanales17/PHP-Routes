@@ -17,9 +17,13 @@
 		private static bool $resolved = false;
 		private static string $responseType = 'text/html';
 
-		protected function setGlobalPrefix(string $prefix): void
+		protected function setGlobalPrefix(string|bool $prefix): void
 		{
-			Pal::registerGlobalPrefix($prefix);
+			if (is_bool($prefix)) {
+				Pal::registerGlobalPrefix('');
+			} else {
+				Pal::registerGlobalPrefix($prefix);
+			}
 		}
 
 		protected function setParams(array $params): void

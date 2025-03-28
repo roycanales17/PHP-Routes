@@ -148,6 +148,11 @@
 		 */
 		protected function validateURI(string $uri, array $prefix = [], array|null &$params = []): bool
 		{
+			$globalPrefix = Pal::getGlobalPrefix();
+
+			if ($globalPrefix)
+				array_unshift($prefix, $globalPrefix);
+
 			$matched = 0;
 			$url = $_SERVER['REQUEST_URI'] ?? '';
 			$uri = $this->URISlashes($uri, $prefix);

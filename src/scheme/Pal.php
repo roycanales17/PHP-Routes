@@ -12,7 +12,7 @@
 
 		public static function registerGlobalPrefix(string $prefix): void
 		{
-			self::$prefix = ($cleanedPrefix = trim($prefix, '/')) !== '' ? "/{$cleanedPrefix}/" : "";
+			self::$prefix = trim($prefix, '/');
 		}
 
 		public static function performPrivateMethod(object $instance, string $methodName, ...$params):? object

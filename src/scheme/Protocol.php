@@ -97,7 +97,7 @@
 			$globalPrefix = Pal::getGlobalPrefix();
 
 			if ($globalPrefix)
-				$prefix .= rtrim($globalPrefix, '/');
+				$prefix .= "/". $globalPrefix;
 
 			if ($prefixes)
 				$prefix .= '/'. trim(implode('/', $prefixes), '/');
