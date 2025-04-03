@@ -9,31 +9,48 @@
 	{
 		private static array $routes = [];
 		private static string $prefix = '';
+		private static array $methodCache = [];
 
 		public static function registerGlobalPrefix(string $prefix): void
 		{
 			self::$prefix = trim($prefix, '/');
 		}
 
-		public static function performPrivateMethod(object $instance, string $methodName, ...$params):? object
+		public static function performPrivateMethod(object $instance, string $methodName, ...$params): ?object
 		{
-			if (method_exists($instance, $methodName)) {
+			$className = get_class($instance);
+			$cacheKey = $className . '::' . $methodName;
+
+			if (!isset(self::$methodCache[$cacheKey])) {
+				if (!method_exists($instance, $methodName)) {
+					return null;
+				}
 				$reflection = new ReflectionMethod($instance, $methodName);
 				$reflection->setAccessible(true);
-				return $reflection->invoke($instance, $params);
+				self::$methodCache[$cacheKey] = $reflection;
 			}
 
-			return null;
+			return self::$methodCache[$cacheKey]->invoke($instance, ...$params);
 		}
 
-		public static function checkIfMethodIsStatic($className, $methodName): bool {
-			try {
-				$reflectionMethod = new ReflectionMethod($className, $methodName);
-				return $reflectionMethod->isStatic();
-			} catch (ReflectionException $e) {
-				return false;
+		public static function checkIfMethodIsStatic($className, $methodName): bool
+		{
+			static $cache = [];
+
+			$cacheKey = $className . '::' . $methodName;
+
+			if (!isset($cache[$cacheKey])) {
+				try {
+					$reflectionMethod = new ReflectionMethod($className, $methodName);
+					$cache[$cacheKey] = $reflectionMethod->isStatic();
+				} catch (ReflectionException $e) {
+					$cache[$cacheKey] = false;
+				}
 			}
+
+			return $cache[$cacheKey];
 		}
+
 
 		public static function getGlobalPrefix(): string
 		{
