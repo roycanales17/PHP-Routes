@@ -97,18 +97,36 @@
 		}
 
 		/**
-		 * Loads and includes route files defined in the routes array.
+		 * Loads and includes route files defined in the routes array,
+		 * only if the current request URI starts with the defined global prefix (if any).
+		 *
+		 * Performs the following:
+		 * - Checks for a global prefix using Pal::getGlobalPrefix()
+		 * - Ensures the current request URI begins with that prefix (if set)
+		 * - Includes route files if matched
+		 * - Returns a 404 JSON response if no route is resolved
 		 *
 		 * @throws Exception If a route file does not exist.
 		 */
 		private function loadRoutes(): void
 		{
-			foreach ($this->getRoutes() as $route) {
-				$path = $this->buildPath($route);
-				if (file_exists($path)) {
-					require_once $path;
-				} else {
-					throw new Exception("[Route] File not exist: $path");
+			$matched = true;
+			if ($globalPrefix = Pal::getGlobalPrefix()) {
+				$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+
+				if (!(strpos($requestUri, '/' . $globalPrefix) === 0)) {
+					$matched = false;
+				}
+			}
+
+			if ($matched) {
+				foreach ($this->getRoutes() as $route) {
+					$path = $this->buildPath($route);
+					if (file_exists($path)) {
+						require_once $path;
+					} else {
+						throw new Exception("[Route] File not exist: $path");
+					}
 				}
 			}
 
