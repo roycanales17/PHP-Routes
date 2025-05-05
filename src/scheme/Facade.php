@@ -9,6 +9,7 @@
 	abstract class Facade
 	{
 		use Properties;
+		use Reflections;
 
 		/**
 		 * Constructor for initializing the route handling class.
@@ -158,7 +159,7 @@
 		 */
 		public function captured(Closure $closure): void
 		{
-			$closure($this->getContent(), http_response_code(), $this->getResponseType());
+			$this->performAction($closure, ['content' => $this->getContent(), 'code', http_response_code(), 'type' => $this->getResponseType()]);
 		}
 
 		/**
