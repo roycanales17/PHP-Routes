@@ -20,12 +20,14 @@
 
 		public static function registerGlobalDomain(string $domain): void
 		{
-			// Remove protocol and www
-			$domain = preg_replace('#^https?://#', '', $domain);
-			$domain = preg_replace('#^www\.#', '', $domain);
-			$domain = explode('/', $domain)[0];
+			$domain = preg_replace('#^https?://#', '', $domain);       // Remove protocol
+			$domain = preg_replace('#^www\.#', '', $domain);           // Remove www
+			$domain = explode('/', $domain)[0];                         // Remove path
+			$domain = explode(':', $domain)[0];                         // Remove port
 
-			if (!filter_var('http://' . $domain, FILTER_VALIDATE_URL) || !preg_match('/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i', $domain)) {
+			if (!filter_var('http://' . $domain, FILTER_VALIDATE_URL) ||
+				!preg_match('/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i', $domain) &&
+				!in_array($domain, ['localhost', '127.0.0.1'])) {
 				throw new InvalidArgumentException("Invalid domain: {$domain}");
 			}
 

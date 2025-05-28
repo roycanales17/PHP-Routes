@@ -118,10 +118,13 @@
 			if ($globalDomain = Pal::getGlobalDomain()) {
 				$requestDomain = $_SERVER['HTTP_HOST'] ?? '';
 				$normalize = function ($domain) {
-					return preg_replace('#^www\.#', '', strtolower($domain));
+					$domain = strtolower($domain);
+					$domain = preg_replace('#^www\.#', '', $domain);
+					return explode(':', $domain)[0]; // Remove port
 				};
 
-				if (!($normalize($requestDomain) === $normalize($globalDomain))) {
+				$isLocalhost = in_array($normalize($requestDomain), ['localhost', '127.0.0.1']);
+				if (!$isLocalhost && $normalize($requestDomain) !== $normalize($globalDomain)) {
 					$matched = false;
 				}
 			}
