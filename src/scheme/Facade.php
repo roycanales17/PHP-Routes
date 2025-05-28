@@ -18,9 +18,10 @@
 		 * @param array $routes An array of routes to be registered.
 		 * @param string $root The root path for the routes.
 		 * @param string $prefix Global prefix for all the routes.
+		 * @param string $domain Global domain checker for all the routes.
 		 * @throws Exception
 		 */
-		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string $prefix = '', bool $reset = false)
+		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string $prefix = '', bool $reset = false, string $domain = '')
 		{
 			$this->setMethod($method);
 			$this->setParams($params);
@@ -30,6 +31,9 @@
 
 			if ($prefix)
 				$this->setGlobalPrefix($prefix);
+
+			if ($domain)
+				$this->setGlobalDomain($domain);
 
 			if ($routes)
 				$this->setRoutes($routes);
@@ -111,7 +115,18 @@
 		private function loadRoutes(): void
 		{
 			$matched = true;
-			if ($globalPrefix = Pal::getGlobalPrefix()) {
+			if ($globalDomain = Pal::getGlobalDomain()) {
+				$requestDomain = $_SERVER['HTTP_HOST'] ?? '';
+				$normalize = function ($domain) {
+					return preg_replace('#^www\.#', '', strtolower($domain));
+				};
+
+				if (!($normalize($requestDomain) === $normalize($globalDomain))) {
+					$matched = false;
+				}
+			}
+
+			if ($matched && ($globalPrefix = Pal::getGlobalPrefix())) {
 				$requestUri = $_SERVER['REQUEST_URI'] ?? '';
 
 				if (!(strpos($requestUri, '/' . $globalPrefix) === 0)) {

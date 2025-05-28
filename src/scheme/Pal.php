@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
+	use InvalidArgumentException;
 	use ReflectionException;
 	use ReflectionMethod;
 
@@ -9,11 +10,26 @@
 	{
 		private static array $routes = [];
 		private static string $prefix = '';
+		private static string $domain = '';
 		private static array $methodCache = [];
 
 		public static function registerGlobalPrefix(string $prefix): void
 		{
-			self::$prefix = trim($prefix, '/');
+			self::$prefix = trim(str_replace('.', '/', $prefix), '/');
+		}
+
+		public static function registerGlobalDomain(string $domain): void
+		{
+			// Remove protocol and www
+			$domain = preg_replace('#^https?://#', '', $domain);
+			$domain = preg_replace('#^www\.#', '', $domain);
+			$domain = explode('/', $domain)[0];
+
+			if (!filter_var('http://' . $domain, FILTER_VALIDATE_URL) || !preg_match('/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i', $domain)) {
+				throw new InvalidArgumentException("Invalid domain: {$domain}");
+			}
+
+			self::$domain = $domain;
 		}
 
 		public static function performPrivateMethod(object $instance, string $methodName, ...$params): ?object
@@ -55,6 +71,11 @@
 		public static function getGlobalPrefix(): string
 		{
 			return self::$prefix;
+		}
+
+		public static function getGlobalDomain(): string
+		{
+			return self::$domain;
 		}
 
 		public static function getRoutes(string $type): array

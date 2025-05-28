@@ -22,6 +22,11 @@
 			Pal::registerGlobalPrefix($prefix);
 		}
 
+		protected function setGlobalDomain(string $domain): void
+		{
+			Pal::registerGlobalDomain($domain);
+		}
+
 		protected function setParams(array $params): void
 		{
 			$this->params = $params;
