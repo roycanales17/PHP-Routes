@@ -6,7 +6,7 @@
 	use ReflectionException;
 	use ReflectionMethod;
 
-	class Pal
+	final class Pal
 	{
 		private static array $routes = [];
 		private static string $prefix = '';

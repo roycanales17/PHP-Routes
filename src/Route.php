@@ -28,7 +28,7 @@
 	 * @method static Where where(string $key, string $expression) Registers a parameter pattern for the route.
 	 */
 
-	class Route extends Facade
+	final class Route extends Facade
 	{
 		public static function configure(string $root, array $routes, string $prefix = '', string $domain = ''): self {
 			return new static(

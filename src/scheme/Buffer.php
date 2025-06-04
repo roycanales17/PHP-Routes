@@ -2,7 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
-	class Buffer
+	final class Buffer
 	{
 		private static array $buffered = [];
 		private static array $storage = [];
