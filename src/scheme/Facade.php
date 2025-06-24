@@ -41,8 +41,10 @@
 			if ($root)
 				$this->setRoot($root);
 
-			if ($routes)
-				$this->loadRoutes();
+			if ($routes) {
+				$this->loadRoutes(true);
+				$this->loadRoutes(false);
+			}
 
 			if ($response) {
 				self::setStaticResolved(true);
@@ -112,8 +114,10 @@
 		 *
 		 * @throws Exception If a route file does not exist.
 		 */
-		private function loadRoutes(): void
+		private function loadRoutes(bool $initialize): void
 		{
+			Pal::toggleInitializing($initialize);
+
 			$matched = true;
 			if ($globalDomain = Pal::getGlobalDomain()) {
 				$requestDomain = $_SERVER['HTTP_HOST'] ?? '';
@@ -137,11 +141,11 @@
 				}
 			}
 
-			if ($matched) {
+			if ($matched || Pal::isInitializing()) {
 				foreach ($this->getRoutes() as $route) {
 					$path = $this->buildPath($route);
 					if (file_exists($path)) {
-						require_once $path;
+						require($path);
 					} else {
 						throw new Exception("[Route] File not exist: $path");
 					}

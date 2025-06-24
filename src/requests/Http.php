@@ -123,7 +123,7 @@
 			$this->setupRouteParamsExpression();
 			$this->registerRoutes($prefixes = $this->getActivePrefix(), $routeName);
 
-			if (!$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
+			if (!Pal::isInitializing() && !$this->getRouteStatus() && $this->validateURI($this->getURI(), $prefixes, $params)) {
 
 				if (!$this->validateDomain($this->getRequestDomain()))
 					return;
