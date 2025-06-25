@@ -4,6 +4,7 @@
 
 	use App\Routes\Scheme\Buffer;
 	use App\Routes\Scheme\Pal;
+	use Exception;
 
 	trait Controller
 	{
@@ -11,9 +12,10 @@
 
 		protected function RegisterController(string $className): self
 		{
-			if (class_exists($className))
-				$this->controller = $className;
+			if (!class_exists($className))
+				throw new Exception("Controller class $className does not exist.");
 
+			$this->controller = $className;
 			return $this;
 		}
 

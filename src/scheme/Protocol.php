@@ -3,6 +3,7 @@
 	namespace App\Routes\Scheme;
 
 	use Closure;
+	use Exception;
 
 	trait Protocol
 	{
@@ -20,6 +21,19 @@
 
 		protected function registerAction(string|array|Closure $action): void
 		{
+			if (is_array($action)) {
+				$class = $action[0] ?? null;
+				$method = $action[1] ?? null;
+
+				if (!class_exists($class)) {
+					throw new Exception("Class {$class} does not exist");
+				}
+
+				if (!method_exists($class, $method)) {
+					throw new Exception("Class {$class} does not have method {$method}");
+				}
+			}
+
 			$this->actions = $action;
 		}
 
