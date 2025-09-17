@@ -178,9 +178,17 @@
 		 *
 		 * @param Closure $closure The closure to be executed.
 		 */
-		public function captured(Closure $closure): void
+		public function captured(Closure $closure, bool $exit = false): void
 		{
-			$closure($this->getContent(), http_response_code(), $this->getResponseType());
+			if (http_response_code() === 404) {
+				return;
+			}
+
+			if ($this->isResolved()) {
+				$closure($this->getContent(), http_response_code(), $this->getResponseType());
+
+				if ($exit) exit();
+			}
 		}
 
 		/**
