@@ -47,7 +47,9 @@
 				$this->registerMiddlewares($middlewares);
 
 				if ($unauthorized = Buffer::fetch('unauthorized')) {
-					$this->registerMiddlewareUnauthorized($unauthorized);
+					if ($unauthorized = end($unauthorized)) {
+						$this->registerMiddlewareUnauthorized($unauthorized);
+					}
 				}
 			}
 		}
