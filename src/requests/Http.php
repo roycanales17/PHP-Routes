@@ -46,8 +46,7 @@
 			if ($middlewares) {
 				$this->registerMiddlewares($middlewares);
 
-				$unauthorized = method_exists($this, 'GetUnauthorized') ? $this->GetUnauthorized() : null;
-				if ($unauthorized) {
+				if ($unauthorized = Buffer::fetch('unauthorized')) {
 					$this->registerMiddlewareUnauthorized($unauthorized);
 				}
 			}
