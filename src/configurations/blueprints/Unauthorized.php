@@ -21,7 +21,7 @@
 
 		protected function DestroyUnauthorized(): void
 		{
-			if ($this->getUnauthorized()) {
+			if ($this->GetUnauthorized()) {
 				$unauthorized = Buffer::fetch('unauthorized');
 				if ($unauthorized) {
 					Buffer::replace('unauthorized', $unauthorized);
@@ -31,13 +31,13 @@
 
 		protected function SetupUnauthorized(): void
 		{
-			$unauthorized = $this->getUnauthorized();
+			$unauthorized = $this->GetUnauthorized();
 			if ($unauthorized && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
 				Buffer::register('unauthorized', $unauthorized);
 			}
 		}
 
-		protected function getUnauthorized(): ?Closure
+		protected function GetUnauthorized(): ?Closure
 		{
 			return $this->callback;
 		}

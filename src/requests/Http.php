@@ -46,7 +46,7 @@
 			if ($middlewares) {
 				$this->registerMiddlewares($middlewares);
 
-				$unauthorized = method_exists($this, 'getUnauthorized') ? $this->getUnauthorized() : null;
+				$unauthorized = method_exists($this, 'GetUnauthorized') ? $this->GetUnauthorized() : null;
 				if ($unauthorized) {
 					$this->registerMiddlewareUnauthorized($unauthorized);
 				}
@@ -149,7 +149,7 @@
 						return;
 					}
 
-					$unauthorized = $this->getUnauthorized();
+					$unauthorized = $this->fetchUnauthorized();
 					if ($unauthorized) {
 						$this->capture($this->performAction($unauthorized));
 						return;

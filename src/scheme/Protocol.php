@@ -103,7 +103,7 @@
 			return $_SERVER['HTTP_HOST'] ?? 'localhost';
 		}
 
-		protected function getUnauthorized(): ?Closure
+		protected function fetchUnauthorized(): ?Closure
 		{
 			return $this->unauthorized;
 		}
