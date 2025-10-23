@@ -2,13 +2,14 @@
 
 	namespace App\Routes\Configurations\Builder;
 
-	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Middleware as BaseMiddleware;
+	use App\Routes\Configurations\Blueprints\Unauthorized;
 	use App\Routes\Configurations\Blueprints\Controller;
-	use App\Routes\Configurations\Blueprints\Group;
-	use App\Routes\Configurations\Blueprints\Name;
-	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Configurations\Blueprints\Domain;
 	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Group;
+	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Configurations\Blueprints\Name;
 	use App\Routes\Configurations\Config;
 
 	class Middleware extends Config
@@ -17,6 +18,9 @@
 
 		use BaseMiddleware {
 			RegisterMiddleware as private middleware;
+		}
+		use Unauthorized {
+			RegisterUnauthorized as public unauthorized;
 		}
 		use Where {
 			RegisterWhere as public where;

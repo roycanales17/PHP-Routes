@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
+	use App\Utilities\Server;
 	use Closure;
 	use Exception;
 
@@ -11,6 +12,7 @@
 		private array $domainNames = [];
 		private array $middlewares = [];
 		private array $expressions = [];
+		private ?Closure $unauthorized = null;
 		private string|array|Closure $actions = [];
 		private static bool $status = false;
 
@@ -45,6 +47,11 @@
 		protected function registerMiddlewares(array $middleware): void
 		{
 			$this->middlewares = $middleware;
+		}
+
+		protected function registerMiddlewareUnauthorized(Closure $callback): void
+		{
+			$this->unauthorized = $callback;
 		}
 
 		protected function registerExpressions(array $expressions): void
@@ -89,7 +96,16 @@
 
 		protected function getRequestDomain(): string
 		{
+			if (class_exists(Server::class)) {
+				return Server::HostName();
+			}
+			
 			return $_SERVER['HTTP_HOST'] ?? 'localhost';
+		}
+
+		protected function getUnauthorized(): ?Closure
+		{
+			return $this->unauthorized;
 		}
 
 		private function getActivePrefix(): array

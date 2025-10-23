@@ -3,6 +3,7 @@
 	namespace App\Routes\Requests;
 
 	use Closure;
+	use Exception;
 	use ReflectionException;
 
 	use App\Routes\Route;
@@ -11,6 +12,7 @@
 	use App\Routes\Scheme\Protocol;
 	use App\Routes\Scheme\Reflections;
 	use App\Routes\Scheme\Validations;
+	use App\Utilities\Server;
 
 	abstract class Http
 	{
@@ -43,6 +45,11 @@
 
 			if ($middlewares) {
 				$this->registerMiddlewares($middlewares);
+
+				$unauthorized = method_exists($this, 'getUnauthorized') ? $this->getUnauthorized() : null;
+				if ($unauthorized) {
+					$this->registerMiddlewareUnauthorized($unauthorized);
+				}
 			}
 		}
 
@@ -137,8 +144,18 @@
 				}
 
 				if (!$this->validateMiddleware($this->fetchMiddlewares())) {
-					$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
-					return;
+					if (class_exists(Server::class) && Server::isAjaxRequest()) {
+						$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
+						return;
+					}
+
+					$unauthorized = $this->getUnauthorized();
+					if ($unauthorized) {
+						$this->capture($this->performAction($unauthorized));
+						return;
+					}
+
+					throw new Exception("Unauthorized request", 401);
 				}
 
 				$this->capture( function () use ($params) {
