@@ -152,7 +152,12 @@
 
 					$unauthorized = $this->fetchUnauthorized();
 					if ($unauthorized) {
-						$this->capture($this->performAction($unauthorized));
+						$result = $this->performAction($unauthorized);
+						if (is_object($result)) {
+							unset($result);
+							return;
+						}
+						$this->capture($result);
 						return;
 					}
 
