@@ -144,10 +144,19 @@
 				$this->capture( function () use ($params) {
 					$captured = $this->performAction($this->getActions(), $params);
 
-					if (is_array($captured)) {
-						echo(json_encode($captured, JSON_PRETTY_PRINT));
-					} else {
-						echo($captured);
+					switch (true) {
+						case is_array($captured):
+							echo(json_encode($captured, JSON_PRETTY_PRINT));
+							break;
+
+						case is_object($captured):
+							// This means if it is a class it will automatically run the destruct method
+							unset($captured);
+							break;
+
+						default:
+							echo($captured);
+							break;
 					}
 				});
 			}
