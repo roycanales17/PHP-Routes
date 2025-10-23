@@ -31,11 +31,9 @@
 
 		protected function SetupUnauthorized(): void
 		{
-			$domains = $this->getUnauthorized();
-			if ($domains && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
-				foreach ($domains as $domain) {
-					Buffer::register('unauthorized', $domain);
-				}
+			$unauthorized = $this->getUnauthorized();
+			if ($unauthorized && in_array(strtolower(Pal::baseClassName(get_called_class())), Pal::getRoutes('configurations'))) {
+				Buffer::register('unauthorized', $unauthorized);
 			}
 		}
 
