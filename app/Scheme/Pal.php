@@ -218,7 +218,7 @@
 				return new $className(...$params);
 			}
 
-			return null;
+			throw new InvalidArgumentException("[Route] Class {$className} does not exist");
 		}
 
 		/**
