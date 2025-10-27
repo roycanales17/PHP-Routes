@@ -188,7 +188,7 @@
 				? dirname(__DIR__)
 				: getcwd() . DIRECTORY_SEPARATOR . 'src';
 
-			$path = $baseDir . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . 'builder';
+			$path = $baseDir . DIRECTORY_SEPARATOR . $type . DIRECTORY_SEPARATOR . 'Builder';
 
 			if (is_dir($path)) {
 				foreach (scandir($path) ?: [] as $file) {
@@ -197,7 +197,7 @@
 						$file !== '..' &&
 						pathinfo($file, PATHINFO_EXTENSION) === 'php'
 					) {
-						self::$routes[$type][] = strtolower(pathinfo($file, PATHINFO_FILENAME));
+						self::$routes[$type][] = strtolower(pathinfo(ucfirst($file), PATHINFO_FILENAME));
 					}
 				}
 			}

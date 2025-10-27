@@ -94,6 +94,7 @@
 		private function commence(): ?object
 		{
 			foreach ($this->getProtocols() as $protocol) {
+				$protocol = ucfirst($protocol);
 				if (in_array($this->getMethod(), Pal::getRoutes($protocol))) {
 					return $this->performRoute($this->getMethod(), $protocol);
 				}
@@ -205,6 +206,7 @@
 		 */
 		private function performRoute(string $method, string $type): object
 		{
+			$method = ucfirst($method);
 			return Pal::createInstance("App\\Routes\\$type\\Builder\\$method", $this->params[0] ?? '', $this->params[1] ?? []);
 		}
 	}
