@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\Routes\\": "src/"
+      "App\\Routes\\": "app/"
     }
   },
   "version": "4.2.6"

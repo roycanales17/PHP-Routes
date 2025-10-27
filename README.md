@@ -173,11 +173,10 @@ The route feature allows you to manage HTTP requests easily in your application.
 2. **Using the Routes Feature** After configuring your routes as described in Step 1, you can now start using the route feature to register your routes and define actions that should be taken when those routes are accessed.
 
 In the example below, we use the Route::get() method to register a route for the homepage (/), which will echo Hello World! when visited.
+
 ```php
   <?php
   
-   use App\Routes\Route;
-   
    Route::get('/', function () {
       echo 'Hello World!';
    });
