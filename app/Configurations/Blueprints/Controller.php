@@ -1,10 +1,10 @@
 <?php
 
-	namespace Configurations\Blueprints;
+	namespace App\Routes\Configurations\Blueprints;
 
 	use Exception;
-	use Scheme\Buffer;
-	use Scheme\Pal;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Pal;
 
 	trait Controller
 	{

@@ -1,16 +1,16 @@
 <?php
 
-	namespace Configurations\Builder;
+	namespace App\Routes\Configurations\Builder;
 
-	use Configurations\Blueprints\Controller;
-	use Configurations\Blueprints\Domain;
-	use Configurations\Blueprints\Group;
-	use Configurations\Blueprints\Middleware as BaseMiddleware;
-	use Configurations\Blueprints\Name;
-	use Configurations\Blueprints\Prefix;
-	use Configurations\Blueprints\Unauthorized;
-	use Configurations\Blueprints\Where;
-	use Configurations\Config;
+	use App\Routes\Configurations\Blueprints\Controller;
+	use App\Routes\Configurations\Blueprints\Domain;
+	use App\Routes\Configurations\Blueprints\Group;
+	use App\Routes\Configurations\Blueprints\Middleware as BaseMiddleware;
+	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Unauthorized;
+	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Configurations\Config;
 
 	class Middleware extends Config
 	{

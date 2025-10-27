@@ -1,15 +1,15 @@
 <?php
 
-	namespace Configurations\Builder;
+	namespace App\Routes\Configurations\Builder;
 
-	use Configurations\Blueprints\Controller as BaseController;
-	use Configurations\Blueprints\Domain;
-	use Configurations\Blueprints\Group;
-	use Configurations\Blueprints\Middleware;
-	use Configurations\Blueprints\Name;
-	use Configurations\Blueprints\Prefix;
-	use Configurations\Blueprints\Where;
-	use Configurations\Config;
+	use App\Routes\Configurations\Blueprints\Controller as BaseController;
+	use App\Routes\Configurations\Blueprints\Domain;
+	use App\Routes\Configurations\Blueprints\Group;
+	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Configurations\Config;
 
 	class Controller extends Config
 	{

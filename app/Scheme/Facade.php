@@ -1,10 +1,10 @@
 <?php
 
-	namespace Scheme;
+	namespace App\Routes\Scheme;
 
 	use Closure;
 	use Exception;
-	use Route;
+	use App\Routes\Route;
 
 	abstract class Facade
 	{

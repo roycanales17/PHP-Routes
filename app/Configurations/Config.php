@@ -1,8 +1,8 @@
 <?php
 
-	namespace Configurations;
+	namespace App\Routes\Configurations;
 
-	use Scheme\Pal;
+	use App\Routes\Scheme\Pal;
 
 	abstract class Config
 	{

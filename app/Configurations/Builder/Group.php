@@ -1,17 +1,17 @@
 <?php
 
-	namespace Configurations\Builder;
+	namespace App\Routes\Configurations\Builder;
 
 	use Closure;
-	use Configurations\Blueprints\Controller;
-	use Configurations\Blueprints\Domain;
-	use Configurations\Blueprints\Group as BaseGroup;
-	use Configurations\Blueprints\Middleware;
-	use Configurations\Blueprints\Name;
-	use Configurations\Blueprints\Prefix;
-	use Configurations\Blueprints\Where;
-	use Configurations\Config;
-	use Scheme\Pal;
+	use App\Routes\Configurations\Blueprints\Controller;
+	use App\Routes\Configurations\Blueprints\Domain;
+	use App\Routes\Configurations\Blueprints\Group as BaseGroup;
+	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Configurations\Config;
+	use App\Routes\Scheme\Pal;
 
 	class Group extends Config
 	{

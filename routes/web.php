@@ -1,4 +1,5 @@
 <?php
+	use App\Routes\Route;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -10,15 +11,15 @@
 	|
 	*/
 
-Route::get('/', function () {
-	$name = 'Robroy';
-	$accountUrl = Route::link('account', ['name' => $name]);
-	
-	echo '<h1>Hello, World!</h1>';
-	echo '<p>Welcome to our startup platform. We\'re glad you\'re here.</p>';
-	echo '<p><a href="' . htmlspecialchars($accountUrl) . '">Who built this?</a></p>';
-});
+	Route::get('/', function () {
+		$name = 'Robroy';
+		$accountUrl = Route::link('account', ['name' => $name]);
 
-Route::get('/account/{name}', function(string $name) {
-	echo "Hi there, I'm $name!";
-})->name('account');
+		echo '<h1>Hello, World!</h1>';
+		echo '<p>Welcome to our startup platform. We\'re glad you\'re here.</p>';
+		echo '<p><a href="' . htmlspecialchars($accountUrl) . '">Who built this?</a></p>';
+	});
+
+	Route::get('/account/{name}', function(string $name) {
+		echo "Hi there, I'm $name!";
+	})->name('account');

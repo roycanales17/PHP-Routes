@@ -1,6 +1,6 @@
 <?php
 
-	namespace Configurations\Blueprints;
+	namespace App\Routes\Configurations\Blueprints;
 
 	use Closure;
 

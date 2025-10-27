@@ -1,14 +1,14 @@
 <?php
 
-	namespace Requests\Builder;
+	namespace App\Routes\Requests\Builder;
 
-	use Configurations\Blueprints\Controller;
-	use Configurations\Blueprints\Domain;
-	use Configurations\Blueprints\Middleware;
-	use Configurations\Blueprints\Name;
-	use Configurations\Blueprints\Prefix;
-	use Configurations\Blueprints\Where;
-	use Requests\Http;
+	use App\Routes\Configurations\Blueprints\Controller;
+	use App\Routes\Configurations\Blueprints\Domain;
+	use App\Routes\Configurations\Blueprints\Middleware;
+	use App\Routes\Configurations\Blueprints\Name;
+	use App\Routes\Configurations\Blueprints\Prefix;
+	use App\Routes\Configurations\Blueprints\Where;
+	use App\Routes\Requests\Http;
 
 	class Get extends Http
 	{

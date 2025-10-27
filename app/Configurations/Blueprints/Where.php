@@ -1,9 +1,9 @@
 <?php
 
-	namespace Configurations\Blueprints;
+	namespace App\Routes\Configurations\Blueprints;
 
-	use Scheme\Buffer;
-	use Scheme\Pal;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Pal;
 
 	trait Where
 	{

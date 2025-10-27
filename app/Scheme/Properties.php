@@ -1,6 +1,6 @@
 <?php
 
-	namespace Scheme;
+	namespace App\Routes\Scheme;
 
 	trait Properties
 	{

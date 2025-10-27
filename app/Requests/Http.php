@@ -1,17 +1,17 @@
 <?php
 
-	namespace Requests;
+	namespace App\Routes\Requests;
 
 	use App\Utilities\Server;
 	use Closure;
 	use Exception;
 	use ReflectionException;
-	use Route;
-	use Scheme\Buffer;
-	use Scheme\Pal;
-	use Scheme\Protocol;
-	use Scheme\Reflections;
-	use Scheme\Validations;
+	use App\Routes\Route;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Pal;
+	use App\Routes\Scheme\Protocol;
+	use App\Routes\Scheme\Reflections;
+	use App\Routes\Scheme\Validations;
 
 	abstract class Http
 	{

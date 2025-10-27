@@ -1,10 +1,9 @@
 <?php
 
+	namespace App\Routes\Configurations\Blueprints;
 
-	namespace Configurations\Blueprints;
-
-	use Scheme\Buffer;
-	use Scheme\Pal;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Pal;
 
 	trait Prefix
 	{

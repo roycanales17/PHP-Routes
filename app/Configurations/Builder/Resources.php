@@ -1,8 +1,8 @@
 <?php
 
-	namespace Configurations\Builder;
+	namespace App\Routes\Configurations\Builder;
 
-	use Configurations\Config;
+	use App\Routes\Configurations\Config;
 
 	class Resources extends Config
 	{

@@ -1,20 +1,22 @@
 <?php
+	namespace App\Routes;
 
-
-	use Configurations\Builder\{Group};
-	use Configurations\Builder\Controller;
-	use Configurations\Builder\Domain;
-	use Configurations\Builder\Middleware;
-	use Configurations\Builder\Name;
-	use Configurations\Builder\Prefix;
-	use Configurations\Builder\Where;
-	use Requests\Builder\{Get};
-	use Requests\Builder\Delete;
-	use Requests\Builder\Patch;
-	use Requests\Builder\Post;
-	use Requests\Builder\Put;
-	use Scheme\Buffer;
-	use Scheme\Facade;
+	use Closure;
+	use Exception;
+	use App\Routes\Configurations\Builder\{Group};
+	use App\Routes\Configurations\Builder\Controller;
+	use App\Routes\Configurations\Builder\Domain;
+	use App\Routes\Configurations\Builder\Middleware;
+	use App\Routes\Configurations\Builder\Name;
+	use App\Routes\Configurations\Builder\Prefix;
+	use App\Routes\Configurations\Builder\Where;
+	use App\Routes\Requests\Builder\{Get};
+	use App\Routes\Requests\Builder\Delete;
+	use App\Routes\Requests\Builder\Patch;
+	use App\Routes\Requests\Builder\Post;
+	use App\Routes\Requests\Builder\Put;
+	use App\Routes\Scheme\Buffer;
+	use App\Routes\Scheme\Facade;
 
 	/**
 	 * Class Route
