@@ -113,7 +113,7 @@
 
 			new Route(response: [
 				'content' => ob_get_clean(),
-				'type' => $type,
+				'type' => $type
 			]);
 			$this->toggleStatus(true);
 		}

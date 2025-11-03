@@ -69,7 +69,7 @@
 		 */
 		public static function isInitializing(): bool
 		{
-			return self::$routeInitializing;
+			return !self::$routeInitializing;
 		}
 
 		/**
@@ -80,7 +80,7 @@
 		 */
 		public static function registerGlobalPrefix(string $prefix): void
 		{
-			self::$prefix = trim(str_replace('.', '/', $prefix), '/');
+			self::$prefix = !$prefix ? "" : trim(str_replace('.', '/', $prefix), '/');
 		}
 
 		/**
@@ -92,6 +92,11 @@
 		 */
 		public static function registerGlobalDomain(string $domain): void
 		{
+			if (!$domain) {
+				self::$domain = $domain;
+				return;
+			}
+
 			$domain = preg_replace('#^https?://#', '', $domain);
 			$domain = preg_replace('#^www\.#', '', $domain);
 			$domain = explode('/', $domain)[0];

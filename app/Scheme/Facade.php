@@ -38,22 +38,14 @@
 			$this->setParams($params);
 
 			// Always set the middleware
-			Pal::registerGlobalMiddleware($middleware);
-
-			if ($reset) {
-				$this->refresh();
-			}
-
-			if ($prefix) {
+			if ($routes) {
+				Pal::registerGlobalMiddleware($middleware);
 				Pal::registerGlobalPrefix($prefix);
-			}
-
-			if ($domain) {
 				Pal::registerGlobalDomain($domain);
 			}
 
-			if ($routes) {
-				$this->setRoutes($routes);
+			if ($reset) {
+				$this->refresh();
 			}
 
 			if ($root) {
@@ -61,6 +53,7 @@
 			}
 
 			if ($routes) {
+				$this->setRoutes($routes);
 				$this->loadRoutes($validate);
 			}
 
@@ -160,7 +153,7 @@
 				}
 			}
 
-			if ($matched || Pal::isInitializing()) {
+			if ($matched || !Pal::isInitializing()) {
 				foreach ($this->getRoutes() as $route) {
 					$path = $this->buildPath($route);
 					if (file_exists($path)) {
