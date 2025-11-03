@@ -2,6 +2,7 @@
 
 	namespace App\Routes\Scheme;
 
+	use Exception;
 	use InvalidArgumentException;
 	use ReflectionException;
 	use ReflectionMethod;
@@ -41,6 +42,11 @@
 		 * @var bool
 		 */
 		private static bool $routeInitializing = false;
+
+		/**
+		 * Global middleware
+		 */
+		private static array $middleware = [];
 
 		/**
 		 * Enables or disables route initialization state.
@@ -99,6 +105,26 @@
 			}
 
 			self::$domain = $domain;
+		}
+
+		/**
+		 * Registers a global middleware. Throws an exception if invalid.
+		 *
+		 * @param array $middlewares
+		 * @return void
+		 * @throws Exception
+		 */
+		public static function registerGlobalMiddleware(array $middlewares): void
+		{
+			self::$middleware = [];
+			foreach ($middlewares as $middleware) {
+				if (class_exists($middleware) && method_exists($middleware, 'handle')) {
+					self::$middleware[] = $middleware;
+					return;
+				}
+
+				throw new Exception("Global middleware {$middleware} is invalid or could be missing the `handle` method.");
+			}
 		}
 
 		/**
@@ -170,6 +196,16 @@
 		public static function getGlobalDomain(): string
 		{
 			return self::$domain;
+		}
+
+		/**
+		 * Gets the registered global domain.
+		 *
+		 * @return array
+		 */
+		public static function getGlobalMiddleware(): array
+		{
+			return self::$middleware;
 		}
 
 		/**

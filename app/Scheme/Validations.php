@@ -31,6 +31,19 @@
 		 */
 		protected function validateMiddleware(array $middlewares): bool
 		{
+			$globalMiddleware = Pal::getGlobalMiddleware();
+			foreach ($globalMiddleware as $middleware) {
+				$action = [$middleware, 'handle'];
+				if (!($result = $this->performAction($action))) {
+					return false;
+				}
+
+				if (is_object($result)) {
+					unset($result);
+					return false;
+				}
+			}
+
 			foreach ($middlewares as $middleware) {
 				$class = $middleware[0];
 				$method = $middleware[1];

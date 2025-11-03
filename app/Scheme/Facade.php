@@ -21,29 +21,47 @@
 		 * @param string $domain Global domain checker for all the routes.
 		 * @throws Exception
 		 */
-		function __construct(string $method = '', array $params = [], array $routes = [], string $root = '', array $response = [], string $prefix = '', bool $reset = false, string $domain = '')
+		function __construct(
+			string $method = '',
+			array $params = [],
+			array $routes = [],
+			string $root = '',
+			array $response = [],
+			string $prefix = '',
+			bool $reset = false,
+			string $domain = '',
+			array $middleware = [],
+			bool $validate = false
+		)
 		{
 			$this->setMethod($method);
 			$this->setParams($params);
 
-			if ($reset)
+			// Always set the middleware
+			Pal::registerGlobalMiddleware($middleware);
+
+			if ($reset) {
 				$this->refresh();
+			}
 
-			if ($prefix)
-				$this->setGlobalPrefix($prefix);
+			if ($prefix) {
+				Pal::registerGlobalPrefix($prefix);
+			}
 
-			if ($domain)
-				$this->setGlobalDomain($domain);
-
-			if ($routes)
-				$this->setRoutes($routes);
-
-			if ($root)
-				$this->setRoot($root);
+			if ($domain) {
+				Pal::registerGlobalDomain($domain);
+			}
 
 			if ($routes) {
-				$this->loadRoutes(true);
-				$this->loadRoutes(false);
+				$this->setRoutes($routes);
+			}
+
+			if ($root) {
+				$this->setRoot($root);
+			}
+
+			if ($routes) {
+				$this->loadRoutes($validate);
 			}
 
 			if ($response) {
