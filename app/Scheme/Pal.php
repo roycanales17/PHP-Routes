@@ -221,6 +221,7 @@
 		 */
 		public static function getRoutes(string $type): array
 		{
+			$type = ucfirst($type);
 			if (isset(self::$routes[$type])) {
 				return self::$routes[$type];
 			}
