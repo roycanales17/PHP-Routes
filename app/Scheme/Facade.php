@@ -218,6 +218,7 @@
 		private function performRoute(string $method, string $type): object
 		{
 			$method = ucfirst($method);
+			$type = ucfirst($type);
 			return Pal::createInstance("App\\Routes\\$type\\Builder\\$method", $this->params[0] ?? '', $this->params[1] ?? []);
 		}
 	}
