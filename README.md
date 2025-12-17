@@ -304,7 +304,7 @@ Route::get('/dashboard', function () {
 
 You can later reference it as:
 ```php
-$link = Route::name('dashboard');
+$link = Route::link('dashboard');
 ```
 
 ### 3. How the Request Lifecycle Works
