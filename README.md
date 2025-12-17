@@ -90,7 +90,7 @@ Middleware is executed before the route action and is commonly used for authenti
 Route::middleware([Auth::class, 'isAuthenticated'])->group(function () {
     Route::get('/profile', function () {
         echo 'Your profile';
-    })->middleware([Auth::class, 'isAuthenticated']);
+    });
 });
 ```
 
