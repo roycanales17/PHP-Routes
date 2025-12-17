@@ -53,7 +53,7 @@
 		 * @return static        Returns an instance of the configured Route facade.
 		 * @throws Exception
 		 */
-		public static function configure(string $root, array $routes, string $prefix = '', string $domain = '', array $middleware = [], bool $validate = false): self
+		public static function configure(string $root, array $routes, string $prefix = '', string $domain = '', array $middleware = [], bool $validate = true): self
 		{
 			return new Route(
 				routes: $routes,
