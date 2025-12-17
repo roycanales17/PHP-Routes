@@ -248,8 +248,7 @@ Route::configure(
     array  $routes,
     string $prefix = '',
     string $domain = '',
-    array  $middleware = [],
-    bool   $validate = true
+    array  $middleware = []
 )
 ```
 
@@ -260,7 +259,6 @@ Route::configure(
 | `$prefix`     | Optional global URI prefix applied to all routes       |
 | `$domain`     | Optional domain restriction for all routes             |
 | `$middleware` | Global middleware applied to every route               |
-| `$validate`   | Enable or disable route validation                     |
 
 
 **Example: Global Prefix & Middleware**
