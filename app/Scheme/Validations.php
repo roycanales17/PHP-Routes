@@ -96,11 +96,13 @@
 		protected function validateMethodRequest(string $method): bool
 		{
 			$request = strtoupper($_SERVER['REQUEST_METHOD'] ?? '');
-			if ($method) {
-				return $request === strtoupper($method);
+
+			$body = json_decode(file_get_contents('php://input'), true);
+			if (is_array($body) && isset($body['_method'])) {
+				$request = strtoupper((string) $body['_method']);
 			}
 
-			return false;
+			return $request === strtoupper($method);
 		}
 
 		/**
