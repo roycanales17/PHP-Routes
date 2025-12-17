@@ -181,7 +181,8 @@
 		 */
 		public function routes(Closure $closure): self
 		{
-			$closure(Buffer::fetch('routes') ?? []);
+			$unique = array_map('unserialize', array_unique(array_map('serialize', Buffer::fetch('routes') ?? [])));
+			$closure($unique);
 			return $this;
 		}
 
