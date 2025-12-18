@@ -1,9 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # -------------------------------------------------------
+    # 🧭 Default fallback to index.php
+    # -------------------------------------------------------
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-
-    # Handle all other URLs
-    RewriteRule ^(.*)$ index.php/$1 [L]
+    RewriteRule ^ index.php [L,QSA]
 </IfModule>
