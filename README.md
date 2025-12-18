@@ -370,10 +370,12 @@ Hello World
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # -------------------------------------------------------
+    # 🧭 Default fallback to index.php
+    # -------------------------------------------------------
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-
-    RewriteRule ^(.*)$ index.php/$1 [L] 
+    RewriteRule ^ index.php [L,QSA]
 </IfModule>
 ```
 
