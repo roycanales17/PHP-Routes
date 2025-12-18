@@ -157,7 +157,7 @@ Route::prefix('admin')->group(function () {
 
 
 ### 5. Name
-**Definition**
+**Definition** <br>
 `Route::name()` assigns a name to a route or a group of routes.
 Named routes allow you to reference URLs without hardcoding paths.
 
