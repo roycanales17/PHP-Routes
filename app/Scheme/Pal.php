@@ -86,26 +86,41 @@
 		/**
 		 * Registers a global domain. Throws an exception if invalid.
 		 *
-		 * @param string $domain
+		 * @param string|null $domain
 		 * @return void
-		 * @throws InvalidArgumentException
 		 */
-		public static function registerGlobalDomain(string $domain): void
+		public static function registerGlobalDomain(?string $domain): void
 		{
-			if (!$domain) {
+			// Explicitly clear domain if null or empty
+			if ($domain === null || trim($domain) === '') {
+				self::$domain = '';
+				return;
+			}
+
+			// Normalize
+			$domain = trim($domain);
+			$domain = preg_replace('#^https?://#i', '', $domain);
+			$domain = preg_replace('#^www\.#i', '', $domain);
+			$domain = explode('/', $domain, 2)[0];
+			$domain = explode(':', $domain, 2)[0];
+			$domain = strtolower($domain);
+
+			// Allow localhost & IPs
+			if (
+				$domain === 'localhost' ||
+				filter_var($domain, FILTER_VALIDATE_IP)
+			) {
 				self::$domain = $domain;
 				return;
 			}
 
-			$domain = preg_replace('#^https?://#', '', $domain);
-			$domain = preg_replace('#^www\.#', '', $domain);
-			$domain = explode('/', $domain)[0];
-			$domain = explode(':', $domain)[0];
+			// Validate real domain names
+			$isValidDomain = preg_match(
+				'/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i',
+				$domain
+			);
 
-			$validTld = preg_match('/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i', $domain);
-			$allowedLocal = in_array($domain, ['localhost', '127.0.0.1']);
-
-			if (!filter_var('http://' . $domain, FILTER_VALIDATE_URL) || (!$validTld && !$allowedLocal)) {
+			if (!$isValidDomain) {
 				throw new InvalidArgumentException("Invalid domain: {$domain}");
 			}
 
@@ -113,7 +128,7 @@
 		}
 
 		/**
-		 * Registers a global middleware. Throws an exception if invalid.
+		 * Registers global middleware. Throws an exception if invalid.
 		 *
 		 * @param array $middlewares
 		 * @return void
@@ -159,7 +174,7 @@
 		}
 
 		/**
-		 * Checks if a class method is static, with caching.
+		 * Checks if a class method is static with caching.
 		 *
 		 * @param string $className
 		 * @param string $methodName
