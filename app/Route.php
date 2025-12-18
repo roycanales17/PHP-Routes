@@ -55,16 +55,17 @@
 		 */
 		public static function configure(string $root, array $routes, string $prefix = '', string $domain = '', array $middleware = []): self
 		{
-			$args = [
+			// Hibernation (collection only)
+			new Route(...($args = [
 				'routes' => $routes,
 				'root' => $root,
 				'prefix' => $prefix,
 				'reset' => true,
 				'domain' => $domain,
 				'middleware' => $middleware,
-			];
+			]), validate: false);
 
-			new Route(...$args, validate: false);
+			// Validation + final build
 			return new Route(...$args, validate: true);
 		}
 
