@@ -95,10 +95,13 @@
 			}
 		}
 
-		private function capture(Closure|string $closure, int $code = 200, string $type = ''): void
+		private function capture(Closure|string $closure, ?int $code = null, string $type = ''): void
 		{
 			ob_start();
+
+			$code = $code ?: http_response_code() ?: 200;
 			http_response_code($code);
+
 			is_string($closure) ? print($closure) : $closure();
 
 			if (!$type) {
@@ -143,7 +146,8 @@
 					return;
 				}
 
-				if (!$this->validateMiddleware($this->fetchMiddlewares())) {
+				$handler = null;
+				if (!$this->validateMiddleware($this->fetchMiddlewares(), $handler)) {
 					if (class_exists(Server::class) && Server::isAjaxRequest()) {
 						$this->capture(json_encode(['message' => 'Unauthorized']), 401, 'application/json');
 						return;
@@ -156,7 +160,19 @@
 							unset($result);
 							return;
 						}
-						$this->capture($result);
+
+						$this->capture($result, 401);
+						return;
+					}
+
+					if (is_object($handler) && method_exists($handler, 'unAuthorized')) {
+						$result = $handler->unAuthorized();
+						if (is_object($result)) {
+							unset($result);
+							return;
+						}
+
+						$this->capture($result, 401);
 						return;
 					}
 
@@ -172,7 +188,7 @@
 							break;
 
 						case is_object($captured):
-							// This means if it is a class it will automatically run the destruct method
+							// This means if it is a class, it will automatically run the destruct method
 							unset($captured);
 							break;
 

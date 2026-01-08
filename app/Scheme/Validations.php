@@ -29,7 +29,7 @@
 		 * @return bool
 		 * @throws ReflectionException
 		 */
-		protected function validateMiddleware(array $middlewares): bool
+		protected function validateMiddleware(array $middlewares, ?object &$handler = null): bool
 		{
 			$globalMiddleware = Pal::getGlobalMiddleware();
 			foreach ($globalMiddleware as $middleware) {
@@ -39,7 +39,7 @@
 				}
 
 				if (is_object($result)) {
-					unset($result);
+					$handler = $result;
 					return false;
 				}
 			}
